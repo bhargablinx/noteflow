@@ -11,13 +11,16 @@ export default function Header() {
                 Noteflow
             </h1>
 
-            <button
-                className="bg-blue-600 hover:bg-blue-700 
-        text-white px-4 py-2 rounded-lg 
-        transition-colors duration-200"
-            >
-                + Add / Create Note
-            </button>
+            <div className="flex items-center gap-[25px]">
+                <button
+                    className="bg-blue-600 hover:bg-blue-700 
+                        text-white px-4 py-2 rounded-lg 
+                        transition-colors duration-200"
+                >
+                    + Create Note
+                </button>
+                <i class="fa-solid fa-sun text-2xl text-white cursor-pointer"></i>
+            </div>
         </header>
     );
 }

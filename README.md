@@ -1,16 +1,56 @@
-# React + Vite
+# NoteFlow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A smart markdown-based notes application designed to make writing, organizing, and searching notes fast and intuitive.
 
-Currently, two official plugins are available:
+## Project Goal
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The goal of this project is to build a modern, developer-friendly notes app that combines simplicity with powerful features. It focuses on improving productivity through:
 
-## React Compiler
+- Real-time markdown preview
+- Fast and efficient note organization
+- Seamless user experience with keyboard shortcuts
+- Local-first data persistence
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Roadmap / Targets
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Phase 1: Core Features
+
+- [ ] Create, edit, and delete notes
+- [ ] Live markdown preview
+- [ ] Save notes using localStorage
+
+### Phase 2: Organization & Search
+
+- [ ] Tagging system (e.g., #work, #study)
+- [ ] Search and filter functionality
+- [ ] Debounced search for performance
+
+### Phase 3: User Experience
+
+- [ ] Dark / Light theme toggle
+- [ ] Responsive UI design
+- [ ] Clean and minimal interface
+
+### Phase 4: Advanced Features
+
+- [ ] Keyboard shortcuts for faster workflow
+- [ ] Improved state management
+- [ ] Performance optimizations
+
+### Phase 5 Enhancements
+
+- [ ] Cloud sync / authentication
+- [ ] Rich text + markdown hybrid editor
+- [ ] Export notes (PDF / Markdown)
+
+---
+
+## Tech Stack
+
+- React + Vite
+- Tailwind CSS
+- LocalStorage API
+
+---

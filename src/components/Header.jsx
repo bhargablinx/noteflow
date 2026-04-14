@@ -1,9 +1,21 @@
 export default function Header() {
     return (
-        <header className="flex items-center justify-between px-6 py-4 bg-white shadow-sm">
-            <h1 className="text-2xl font-bold text-gray-800">Noteflow</h1>
+        <header
+            className="flex items-center justify-between px-6 py-4 
+    bg-white dark:bg-gray-900 
+    shadow-sm dark:shadow-gray-800/30 
+    border-b border-gray-200 dark:border-gray-800 
+    transition-colors duration-300"
+        >
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                Noteflow
+            </h1>
 
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+            <button
+                className="bg-blue-600 hover:bg-blue-700 
+        text-white px-4 py-2 rounded-lg 
+        transition-colors duration-200"
+            >
                 + Add / Create Note
             </button>
         </header>

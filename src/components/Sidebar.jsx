@@ -9,12 +9,15 @@ const notes = [
 
 export default function Sidebar() {
     return (
-        <aside className="w-64 bg-gray-100 h-full p-4">
+        <aside className="w-64 bg-gray-100 dark:bg-gray-900 h-full p-4 transition-colors duration-300">
             <ul className="space-y-2">
                 {notes.map((note, index) => (
                     <li
                         key={index}
-                        className="p-2 rounded-lg cursor-pointer hover:bg-gray-200"
+                        className="p-2 rounded-lg cursor-pointer 
+                hover:bg-gray-200 dark:hover:bg-gray-800 
+                text-gray-800 dark:text-gray-200 
+                transition-colors duration-200"
                     >
                         {note}
                     </li>

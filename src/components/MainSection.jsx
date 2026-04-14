@@ -3,7 +3,7 @@ import Searchbar from "./Searchbar";
 
 export default function MainSection() {
     return (
-        <main className="flex-1 p-6 space-y-4 bg-gray-50 h-full overflow-y-auto">
+        <main className="flex-1 p-6 space-y-4 bg-gray-50 dark:bg-gray-950 h-full overflow-y-auto transition-colors duration-300">
             {/* Search */}
             <Searchbar />
 

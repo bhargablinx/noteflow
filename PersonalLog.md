@@ -22,9 +22,9 @@ There will be two layouts which will have different visuals:
 ### 14-04-2026
 
 - [ ] Implemented the home section.
-- [ ] Now I will to implement the create notes part.
-    - [ ] Where when the use click create notes a modal will be pop up that will show the user to add:
-    - [ ] title, tag, and there will be a text area to add our notes
-    - [ ] There will be a save button
+- [x] Now I will to implement the create notes part.
+    - [x] Where when the use click create notes a modal will be pop up that will show the user to add:
+    - [x] title, tag, and there will be a text area to add our notes
+    - [x] There will be a save button
     - [ ] After clicking that the notes will the added to the local storage
-    - [ ] And will be dynamically updated in the Layout 1 side bar and card will be added
+    - [x] And will be dynamically updated in the Layout 1 side bar and card will be added

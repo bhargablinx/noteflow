@@ -10,7 +10,7 @@ export const NotesProvider = ({ children }) => {
             descriptionPreview:
                 "Brainstorm ideas for the new SaaS product. Focus on scalability, pricing model, and MVP features.",
             tags: ["#work", "#startup", "#ideas"],
-            lastEdited: "2 hours ago",
+            lastEdited: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
         },
         {
             id: 2,
@@ -18,7 +18,7 @@ export const NotesProvider = ({ children }) => {
             descriptionPreview:
                 "Milk, eggs, bread, fruits, vegetables, and snacks for the week. Also check discounts.",
             tags: ["#personal", "#shopping"],
-            lastEdited: "5 hours ago",
+            lastEdited: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 hours ago
         },
         {
             id: 3,
@@ -26,7 +26,9 @@ export const NotesProvider = ({ children }) => {
             descriptionPreview:
                 "Revise kinematics, laws of motion, and numerical problems for upcoming test.",
             tags: ["#study", "#physics"],
-            lastEdited: "1 day ago",
+            lastEdited: new Date(
+                Date.now() - 24 * 60 * 60 * 1000,
+            ).toISOString(), // 1 day ago
         },
         {
             id: 4,
@@ -34,7 +36,9 @@ export const NotesProvider = ({ children }) => {
             descriptionPreview:
                 "Discussed sprint progress, blockers, and next steps. Assigned tasks to team members.",
             tags: ["#work", "#meeting"],
-            lastEdited: "2 days ago",
+            lastEdited: new Date(
+                Date.now() - 2 * 24 * 60 * 60 * 1000,
+            ).toISOString(), // 2 days ago
         },
     ]);
 

@@ -1,14 +1,16 @@
 import { useContext, useState } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import CreateNoteModal from "./CreateNoteModal";
+import { NotesContext } from "../context/NotesContext";
 
 export default function Header() {
     const { theme, setTheme } = useContext(ThemeContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [notes, setNotes] = useState([]); // Temporary
+    const { notes, setNotes } = useContext(NotesContext);
 
     const handleSaveNote = (note) => {
         setNotes((prev) => [note, ...prev]);
+        console.log(notes);
     };
 
     const toggleTheme = () => {

@@ -13,6 +13,7 @@ export default function CreateNoteModal({ isOpen, onClose, onSave }) {
             title,
             tags: tags.split(",").map((tag) => tag.trim()),
             content,
+            descriptionPreview: content.split(".")[0] + ".",
             lastEdited: new Date().toLocaleString(),
         };
 

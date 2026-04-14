@@ -35,24 +35,20 @@ export default function Header() {
                 </h1>
                 <div className="flex items-center gap-[30px]">
                     <button
-                        className="bg-blue-600 hover:bg-blue-700
-                            text-white px-4 py-2 rounded-lg
-                            transition-colors duration-200"
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
                         onClick={() => setIsModalOpen(true)}
                     >
                         + Create Note
                     </button>
-                    {theme == "light" ? (
-                        <i
-                            onClick={toggleTheme}
-                            class="fa-solid fa-sun text-2xl text-white cursor-pointer"
-                        ></i>
-                    ) : (
-                        <i
-                            onClick={toggleTheme}
-                            class="fa-solid fa-moon text-2xl text-black cursor-pointer"
-                        ></i>
-                    )}
+
+                    <i
+                        className={`fa-solid ${
+                            theme === "light"
+                                ? "fa-sun text-yellow-400"
+                                : "fa-moon text-gray-800"
+                        } text-2xl cursor-pointer`}
+                        onClick={toggleTheme}
+                    ></i>
                 </div>
             </header>
 

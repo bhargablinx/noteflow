@@ -1,4 +1,17 @@
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
+
 export default function Header() {
+    const { theme, setTheme } = useContext(ThemeContext);
+
+    const toggleTheme = () => {
+        theme == "light" ? setTheme("dark") : setTheme("light");
+        const html = document.querySelector("html");
+        html.classList.remove("light", "dark");
+        html.classList.add(theme);
+        console.log(theme);
+    };
+
     return (
         <header
             className="flex items-center justify-between px-6 py-4 
@@ -11,7 +24,7 @@ export default function Header() {
                 Noteflow
             </h1>
 
-            <div className="flex items-center gap-[25px]">
+            <div className="flex items-center gap-[30px]">
                 <button
                     className="bg-blue-600 hover:bg-blue-700 
                         text-white px-4 py-2 rounded-lg 
@@ -19,7 +32,17 @@ export default function Header() {
                 >
                     + Create Note
                 </button>
-                <i class="fa-solid fa-sun text-2xl text-white cursor-pointer"></i>
+                {theme == "light" ? (
+                    <i
+                        onClick={toggleTheme}
+                        class="fa-solid fa-sun text-2xl text-white cursor-pointer"
+                    ></i>
+                ) : (
+                    <i
+                        onClick={toggleTheme}
+                        class="fa-solid fa-moon text-2xl text-black cursor-pointer"
+                    ></i>
+                )}
             </div>
         </header>
     );

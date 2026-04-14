@@ -1,15 +1,23 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import MainSection from "./components/MainSection";
 
 function App() {
-    const [count, setCount] = useState(0);
-
     return (
-        <>
-            <h1 class="text-3xl font-bold underline">Hello world!</h1>
-        </>
+        <div className="h-screen flex flex-col">
+            {/* Header */}
+            <Header />
+
+            {/* Body */}
+            <div className="flex flex-1 overflow-hidden">
+                {/* Sidebar */}
+                <Sidebar />
+
+                {/* Main Content */}
+                <MainSection />
+            </div>
+        </div>
     );
 }
 

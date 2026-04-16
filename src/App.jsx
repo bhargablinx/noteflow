@@ -15,20 +15,22 @@ function App() {
             {/* Body */}
             <div className="flex flex-1 overflow-hidden">
                 {/* Sidebar */}
-                <Sidebar />
+                <Sidebar className="flex-1" />
 
                 {/* Main Content */}
-                {selectedNote ? (
-                    <Layout2
-                        selectedNote={selectedNote}
-                        onBack={() => setSelectedNote(null)}
-                        onSave={(updatedNote) => {
-                            console.log("Save logic here", updatedNote);
-                        }}
-                    />
-                ) : (
-                    <Layout1 onSelectNote={setSelectedNote} />
-                )}
+                <div className="flex-1">
+                    {selectedNote ? (
+                        <Layout2
+                            selectedNote={selectedNote}
+                            onBack={() => setSelectedNote(null)}
+                            onSave={(updatedNote) => {
+                                console.log("Save logic here", updatedNote);
+                            }}
+                        />
+                    ) : (
+                        <Layout1 onSelectNote={setSelectedNote} />
+                    )}
+                </div>
             </div>
         </div>
     );

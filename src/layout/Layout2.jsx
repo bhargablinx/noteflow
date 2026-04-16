@@ -17,7 +17,7 @@ export default function Layout2({ selectedNote, onSave }) {
     return (
         <div className="flex h-full">
             {/* Left - Editor */}
-            <div className="w-1/2 p-4 border-r flex flex-col gap-3">
+            <div className="flex-1 p-4 border-r flex flex-col gap-3">
                 <input
                     type="text"
                     placeholder="Title..."
@@ -43,7 +43,7 @@ export default function Layout2({ selectedNote, onSave }) {
             </div>
 
             {/* Right - Preview */}
-            <div className="w-1/2 p-4 overflow-y-auto">
+            <div className="flex-1 p-4 overflow-y-auto">
                 <h1 className="text-2xl font-bold">{title}</h1>
 
                 <div className="text-sm text-gray-500 mb-4">{tags}</div>

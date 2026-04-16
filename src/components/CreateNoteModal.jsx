@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function CreateNoteModal({ isOpen, onClose, onSave }) {
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState("");
     const [content, setContent] = useState("");
 
-    if (!isOpen) return null;
-
     const handleSave = () => {
         const newNote = {
             id: Date.now(),
             title,
-            tags: tags.split(",").map((tag) => tag.trim()),
+            tags: tags
+                .split(",")
+                .map((tag) => `#${tag.trim()}`)
+                .filter((tag) => tag !== "#"),
             content,
             descriptionPreview: content.split(".")[0] + ".",
             lastEdited: new Date().toISOString(),
@@ -19,12 +20,34 @@ export default function CreateNoteModal({ isOpen, onClose, onSave }) {
 
         onSave(newNote);
 
-        // reset fields
         setTitle("");
         setTags("");
         setContent("");
         onClose();
     };
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const handleKeyDown = (e) => {
+            if (e.key === "Escape") {
+                onClose();
+            }
+
+            if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
+                e.preventDefault();
+                handleSave();
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [isOpen, title, tags, content]);
+
+    if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">

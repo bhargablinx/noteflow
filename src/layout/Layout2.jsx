@@ -1,9 +1,21 @@
+import ReactMarkdown from "react-markdown";
 import { useState, useEffect } from "react";
 
-export default function Layout2({ selectedNote }) {
+export default function Layout2({ selectedNote, onSave }) {
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState("");
     const [content, setContent] = useState("");
+
+    const handleSave = () => {
+        const updatedNote = {
+            ...selectedNote,
+            title,
+            tags: tags.split(",").map((tag) => tag.trim()),
+            content,
+        };
+
+        onSave(updatedNote);
+    };
 
     useEffect(() => {
         if (selectedNote) {
@@ -43,8 +55,20 @@ export default function Layout2({ selectedNote }) {
 
             {/* Right - Preview */}
             <div className="w-1/2 p-4">
-                <h2>Preview</h2>
+                <div className="w-1/2 p-4 overflow-y-auto">
+                    <h1 className="text-2xl font-bold">{title}</h1>
+
+                    <div className="text-sm text-gray-500 mb-4">{tags}</div>
+
+                    <ReactMarkdown>{content}</ReactMarkdown>
+                </div>
             </div>
+            <button
+                onClick={handleSave}
+                className="bg-blue-600 text-white px-4 py-2 rounded"
+            >
+                Save
+            </button>
         </div>
     );
 }

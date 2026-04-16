@@ -21,10 +21,21 @@ There will be two layouts which will have different visuals:
 
 ### 14-04-2026
 
-- [ ] Implemented the home section.
+- [x] Implemented the home section.
 - [x] Now I will to implement the create notes part.
     - [x] Where when the use click create notes a modal will be pop up that will show the user to add:
     - [x] title, tag, and there will be a text area to add our notes
     - [x] There will be a save button
     - [ ] After clicking that the notes will the added to the local storage
     - [x] And will be dynamically updated in the Layout 1 side bar and card will be added
+
+### 16-04-2026
+
+- [ ] Beautify markdown editor
+- [ ] Add Shortcut functionality
+- [ ] Sync descriptionPreview & content
+- [ ] Dynamic sidebar
+- [ ] Improve create note modal
+- [ ] Show already created tags
+- [ ] tags recommendation
+- [ ] tags color specification

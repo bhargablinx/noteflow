@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import NotesCard from "./NotesCard";
-import Searchbar from "./Searchbar";
+import NotesCard from "../components/NotesCard";
+import Searchbar from "../components/Searchbar";
 import { NotesContext } from "../context/NotesContext";
 
-export default function MainSection() {
+export default function Layout1() {
     const { notes } = useContext(NotesContext);
     const [tick, setTick] = useState(0);
 
@@ -46,6 +46,7 @@ export default function MainSection() {
                 {/* Card */}
                 {notes.map((note) => (
                     <NotesCard
+                        key={note.id}
                         title={note.title}
                         descriptionPreview={note.descriptionPreview}
                         tags={note.tags}

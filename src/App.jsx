@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import MainSection from "./components/MainSection";
+import Layout1 from "./layout/Layout1";
 
 function App() {
     return (
@@ -15,7 +15,7 @@ function App() {
                 <Sidebar />
 
                 {/* Main Content */}
-                <MainSection />
+                <Layout1 />
             </div>
         </div>
     );

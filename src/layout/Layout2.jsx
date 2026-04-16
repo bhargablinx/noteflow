@@ -81,8 +81,14 @@ export default function Layout2({ selectedNote, onSave, onBack }) {
                         className="
                             prose dark:prose-invert max-w-none
                             prose-headings:font-semibold
-
+                        
                             prose-p:my-1
+                        
+                        
+                            leading-relaxed
+                            prose-p:leading-relaxed
+                            prose-li:leading-relaxed
+                            prose-headings:leading-tight
 
                             prose-headings:mt-4
                             prose-headings:mb-1

@@ -1,7 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import { useState, useEffect } from "react";
 
-export default function Layout2({ selectedNote, onSave }) {
+export default function Layout2({ selectedNote, onSave, onBack }) {
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState("");
     const [content, setContent] = useState("");
@@ -14,41 +14,75 @@ export default function Layout2({ selectedNote, onSave }) {
         }
     }, [selectedNote]);
 
+    const handleSave = () => {
+        const updatedNote = {
+            ...selectedNote,
+            title,
+            tags: tags.split(",").map((t) => t.trim()),
+            content,
+        };
+        onSave(updatedNote);
+    };
+
     return (
-        <div className="flex h-full">
-            {/* Left - Editor */}
-            <div className="flex-1 p-4 border-r flex flex-col gap-3">
-                <input
-                    type="text"
-                    placeholder="Title..."
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    className="p-2 border rounded"
-                />
+        <div className="flex flex-col h-full bg-white dark:bg-gray-950">
+            {/* 🔝 Top Bar */}
+            <div className="flex items-center justify-between px-6 py-3 border-b dark:border-gray-800">
+                <button
+                    onClick={onBack}
+                    className="text-sm text-gray-500 hover:text-gray-800 dark:hover:text-white"
+                >
+                    ← Back
+                </button>
 
-                <input
-                    type="text"
-                    placeholder="Tags (comma separated)"
-                    value={tags}
-                    onChange={(e) => setTags(e.target.value)}
-                    className="p-2 border rounded"
-                />
-
-                <textarea
-                    placeholder="Write markdown..."
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    className="flex-1 p-2 border rounded"
-                />
+                <button
+                    onClick={handleSave}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-lg text-sm"
+                >
+                    Save
+                </button>
             </div>
 
-            {/* Right - Preview */}
-            <div className="flex-1 p-4 overflow-y-auto">
-                <h1 className="text-2xl font-bold">{title}</h1>
+            {/* ✍️ Editor + Preview */}
+            <div className="flex flex-1 overflow-hidden">
+                {/* Editor */}
+                <div className="flex-1 min-w-0 px-6 py-4 flex flex-col gap-4">
+                    <input
+                        type="text"
+                        placeholder="Untitled note..."
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="text-2xl font-semibold bg-transparent outline-none"
+                    />
 
-                <div className="text-sm text-gray-500 mb-4">{tags}</div>
+                    <input
+                        type="text"
+                        placeholder="Add tags (comma separated)"
+                        value={tags}
+                        onChange={(e) => setTags(e.target.value)}
+                        className="text-sm text-gray-500 bg-transparent outline-none"
+                    />
 
-                <ReactMarkdown>{content}</ReactMarkdown>
+                    <textarea
+                        placeholder="Start writing in markdown..."
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        className="flex-1 bg-transparent outline-none resize-none text-gray-800 dark:text-gray-200 leading-relaxed"
+                    />
+                </div>
+
+                {/* Divider */}
+                <div className="w-px bg-gray-200 dark:bg-gray-800" />
+
+                {/* Preview */}
+                <div className="flex-1 min-w-0 px-6 py-4 overflow-y-auto">
+                    <div className="prose dark:prose-invert max-w-none">
+                        <h1>{title || "Untitled note"}</h1>
+                        <p className="text-sm text-gray-400">{tags}</p>
+
+                        <ReactMarkdown>{content}</ReactMarkdown>
+                    </div>
+                </div>
             </div>
         </div>
     );

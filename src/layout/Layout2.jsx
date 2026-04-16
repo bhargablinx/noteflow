@@ -80,27 +80,22 @@ export default function Layout2({ selectedNote, onSave, onBack }) {
                     <div
                         className="
                             prose dark:prose-invert max-w-none
-                            prose-headings:font-semibold
                         
-                            prose-p:my-1
+                            prose-p:my-2 prose-p:text-[15px]
+                            prose-li:my-1
                         
-                        
-                            leading-relaxed
+                            font-sans  leading-relaxed
                             prose-p:leading-relaxed
                             prose-li:leading-relaxed
-                            prose-headings:leading-tight
-
-                            prose-headings:mt-4
-                            prose-headings:mb-1
+                            prose-headings:leading-tight  prose-headings:mt-5  prose-headings:mb-2  prose-headings:font-semibold
 
                             prose-h1:text-3xl
                             prose-h2:text-2xl
                             prose-h3:text-xl
                             
-                            prose-p:text-gray-700
-                            dark:prose-p:text-gray-300
-                            prose-headings:text-gray-900
-                            dark:prose-headings:text-gray-100
+                            prose-p:text-gray-700 dark:prose-p:text-gray-300
+                            prose-headings:text-gray-900 dark:prose-headings:text-gray-100
+                            prose-code:font-mono
                             prose-code:bg-gray-100 dark:prose-code:bg-gray-800
                             prose-code:px-1 prose-code:py-0.5 prose-code:rounded"
                     >

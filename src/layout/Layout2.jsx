@@ -76,7 +76,21 @@ export default function Layout2({ selectedNote, onSave, onBack }) {
 
                 {/* Preview */}
                 <div className="flex-1 min-w-0 px-6 py-4 overflow-y-auto">
-                    <div className="prose dark:prose-invert max-w-none whitespace-pre-wrap">
+                    <div
+                        className="
+                            prose dark:prose-invert max-w-none
+                            whitespace-pre-wrap
+                            prose-headings:font-semibold
+                            prose-h1:text-3xl
+                            prose-h2:text-2xl
+                            prose-h3:text-xl
+                            prose-p:text-gray-700
+                            dark:prose-p:text-gray-300
+                            prose-headings:text-gray-900
+                            dark:prose-headings:text-gray-100
+                            prose-code:bg-gray-100 dark:prose-code:bg-gray-800
+                            prose-code:px-1 prose-code:py-0.5 prose-code:rounded"
+                    >
                         <h1 className="mb-2">{title || "Untitled note"}</h1>
                         <p className="text-sm text-gray-400 mb-5">{tags}</p>
 

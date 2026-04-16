@@ -1,4 +1,5 @@
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { useState, useEffect } from "react";
 
 export default function Layout2({ selectedNote, onSave, onBack }) {
@@ -94,7 +95,9 @@ export default function Layout2({ selectedNote, onSave, onBack }) {
                         <h1 className="mb-2">{title || "Untitled note"}</h1>
                         <p className="text-sm text-gray-400 mb-5">{tags}</p>
 
-                        <ReactMarkdown>{content}</ReactMarkdown>
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {content}
+                        </ReactMarkdown>
                     </div>
                 </div>
             </div>

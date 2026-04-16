@@ -26,7 +26,7 @@ export default function Layout2({ selectedNote, onSave, onBack }) {
 
     return (
         <div className="flex flex-col h-full bg-white dark:bg-gray-950">
-            {/* 🔝 Top Bar */}
+            {/* Top Bar */}
             <div className="flex items-center justify-between px-6 py-3 border-b dark:border-gray-800">
                 <button
                     onClick={onBack}
@@ -43,7 +43,7 @@ export default function Layout2({ selectedNote, onSave, onBack }) {
                 </button>
             </div>
 
-            {/* ✍️ Editor + Preview */}
+            {/* Editor + Preview */}
             <div className="flex flex-1 overflow-hidden">
                 {/* Editor */}
                 <div className="flex-1 min-w-0 px-6 py-4 flex flex-col gap-4">
@@ -76,9 +76,9 @@ export default function Layout2({ selectedNote, onSave, onBack }) {
 
                 {/* Preview */}
                 <div className="flex-1 min-w-0 px-6 py-4 overflow-y-auto">
-                    <div className="prose dark:prose-invert max-w-none">
-                        <h1>{title || "Untitled note"}</h1>
-                        <p className="text-sm text-gray-400">{tags}</p>
+                    <div className="prose dark:prose-invert max-w-none whitespace-pre-wrap">
+                        <h1 className="mb-2">{title || "Untitled note"}</h1>
+                        <p className="text-sm text-gray-400 mb-5">{tags}</p>
 
                         <ReactMarkdown>{content}</ReactMarkdown>
                     </div>

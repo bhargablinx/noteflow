@@ -1,4 +1,6 @@
 import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
 import { useState, useEffect } from "react";
 
@@ -102,7 +104,45 @@ export default function Layout2({ selectedNote, onSave, onBack }) {
                         <h1 className="mb-2">{title || "Untitled note"}</h1>
                         <p className="text-sm text-gray-400 mb-5">{tags}</p>
 
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                                code({ inline, className, children }) {
+                                    const match = /language-(\w+)/.exec(
+                                        className || "",
+                                    );
+
+                                    // DEFAULT LANGUAGE (fallback)
+                                    const language = match ? match[1] : "c";
+
+                                    if (!inline) {
+                                        return (
+                                            <SyntaxHighlighter
+                                                style={oneDark}
+                                                language={language}
+                                                PreTag="div"
+                                                customStyle={{
+                                                    padding: "16px",
+                                                    borderRadius: "8px",
+                                                    margin: "12px 0",
+                                                }}
+                                            >
+                                                {String(children).replace(
+                                                    /\n$/,
+                                                    "",
+                                                )}
+                                            </SyntaxHighlighter>
+                                        );
+                                    }
+
+                                    return (
+                                        <code className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-1 py-0.5 rounded text-sm">
+                                            {children}
+                                        </code>
+                                    );
+                                },
+                            }}
+                        >
                             {content}
                         </ReactMarkdown>
                     </div>

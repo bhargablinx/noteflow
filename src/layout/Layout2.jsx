@@ -54,21 +54,13 @@ export default function Layout2({ selectedNote, onSave }) {
             </div>
 
             {/* Right - Preview */}
-            <div className="w-1/2 p-4">
-                <div className="w-1/2 p-4 overflow-y-auto">
-                    <h1 className="text-2xl font-bold">{title}</h1>
+            <div className="w-1/2 p-4 overflow-y-auto">
+                <h1 className="text-2xl font-bold">{title}</h1>
 
-                    <div className="text-sm text-gray-500 mb-4">{tags}</div>
+                <div className="text-sm text-gray-500 mb-4">{tags}</div>
 
-                    <ReactMarkdown>{content}</ReactMarkdown>
-                </div>
+                <ReactMarkdown>{content}</ReactMarkdown>
             </div>
-            <button
-                onClick={handleSave}
-                className="bg-blue-600 text-white px-4 py-2 rounded"
-            >
-                Save
-            </button>
         </div>
     );
 }

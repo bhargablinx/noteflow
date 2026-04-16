@@ -1,13 +1,18 @@
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import {
+    oneDark,
+    oneLight,
+} from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function Layout2({ selectedNote, onSave, onBack }) {
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState("");
     const [content, setContent] = useState("");
+    const { theme } = useContext(ThemeContext);
 
     useEffect(() => {
         if (selectedNote) {
@@ -111,34 +116,76 @@ export default function Layout2({ selectedNote, onSave, onBack }) {
                                     const match = /language-(\w+)/.exec(
                                         className || "",
                                     );
+                                    const language = match
+                                        ? match[1]
+                                        : "javascript";
+                                    const codeString = String(children).replace(
+                                        /\n$/,
+                                        "",
+                                    );
 
-                                    // DEFAULT LANGUAGE (fallback)
-                                    const language = match ? match[1] : "c";
-
-                                    if (!inline) {
+                                    // INLINE CODE
+                                    if (inline) {
                                         return (
-                                            <SyntaxHighlighter
-                                                style={oneDark}
-                                                language={language}
-                                                PreTag="div"
-                                                customStyle={{
-                                                    padding: "16px",
-                                                    borderRadius: "8px",
-                                                    margin: "12px 0",
-                                                }}
-                                            >
-                                                {String(children).replace(
-                                                    /\n$/,
-                                                    "",
-                                                )}
-                                            </SyntaxHighlighter>
+                                            <code className="bg-gray-200 dark:bg-gray-800 px-1 py-0.5 rounded text-sm">
+                                                {children}
+                                            </code>
                                         );
                                     }
 
+                                    // BLOCK CODE
                                     return (
-                                        <code className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-1 py-0.5 rounded text-sm">
-                                            {children}
-                                        </code>
+                                        <div
+                                            className="
+    my-4 rounded-lg overflow-hidden
+    border border-gray-200 dark:border-gray-700
+    bg-gray-50 dark:bg-gray-900
+"
+                                        >
+                                            {/* Header */}
+                                            <div
+                                                className="
+        flex items-center justify-between px-3 py-1 text-xs
+        bg-gray-100 dark:bg-gray-800
+        border-b border-gray-200 dark:border-gray-700
+    "
+                                            >
+                                                <span className="uppercase text-gray-500 dark:text-gray-400">
+                                                    {language}
+                                                </span>
+
+                                                <i
+                                                    onClick={() =>
+                                                        navigator.clipboard.writeText(
+                                                            codeString,
+                                                        )
+                                                    }
+                                                    className="fa-regular fa-copy text-sm text-gray-500 hover:text-black dark:hover:text-white cursor-pointer"
+                                                />
+                                            </div>
+
+                                            {/* Code */}
+                                            <SyntaxHighlighter
+                                                style={
+                                                    theme === "dark"
+                                                        ? oneDark
+                                                        : oneLight
+                                                }
+                                                language={language}
+                                                PreTag="div"
+                                                showLineNumbers
+                                                customStyle={{
+                                                    margin: 0,
+                                                    padding: "16px",
+                                                    background:
+                                                        theme === "dark"
+                                                            ? "#111827"
+                                                            : "#ffffff",
+                                                }}
+                                            >
+                                                {codeString}
+                                            </SyntaxHighlighter>
+                                        </div>
                                     );
                                 },
                             }}

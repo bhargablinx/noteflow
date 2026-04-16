@@ -80,11 +80,17 @@ export default function Layout2({ selectedNote, onSave, onBack }) {
                     <div
                         className="
                             prose dark:prose-invert max-w-none
-                            whitespace-pre-wrap
                             prose-headings:font-semibold
+
+                            prose-p:my-1
+
+                            prose-headings:mt-4
+                            prose-headings:mb-1
+
                             prose-h1:text-3xl
                             prose-h2:text-2xl
                             prose-h3:text-xl
+                            
                             prose-p:text-gray-700
                             dark:prose-p:text-gray-300
                             prose-headings:text-gray-900

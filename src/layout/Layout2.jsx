@@ -6,17 +6,6 @@ export default function Layout2({ selectedNote, onSave }) {
     const [tags, setTags] = useState("");
     const [content, setContent] = useState("");
 
-    const handleSave = () => {
-        const updatedNote = {
-            ...selectedNote,
-            title,
-            tags: tags.split(",").map((tag) => tag.trim()),
-            content,
-        };
-
-        onSave(updatedNote);
-    };
-
     useEffect(() => {
         if (selectedNote) {
             setTitle(selectedNote.title);

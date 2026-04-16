@@ -3,7 +3,7 @@ import NotesCard from "../components/NotesCard";
 import Searchbar from "../components/Searchbar";
 import { NotesContext } from "../context/NotesContext";
 
-export default function Layout1() {
+export default function Layout1({ onSelectNote }) {
     const { notes } = useContext(NotesContext);
     const [tick, setTick] = useState(0);
 
@@ -51,6 +51,7 @@ export default function Layout1() {
                         descriptionPreview={note.descriptionPreview}
                         tags={note.tags}
                         lastEdited={getTimeAgo(note.lastEdited)}
+                        onClick={() => onSelectNote(note)}
                     />
                 ))}
             </div>

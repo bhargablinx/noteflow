@@ -3,6 +3,7 @@ export default function NotesCard({
     descriptionPreview,
     tags = [],
     lastEdited,
+    onClick,
 }) {
     // Tag color variations
     const tagColors = [
@@ -15,6 +16,7 @@ export default function NotesCard({
 
     return (
         <div
+            onClick={onClick}
             className="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-sm hover:shadow-md 
     dark:shadow-gray-800/30 transition-all duration-300 cursor-pointer border border-transparent dark:border-gray-800"
         >

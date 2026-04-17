@@ -7,13 +7,14 @@ export default function Editor({
     setContent,
 }) {
     function shortcutFunctionality(e) {
-        // Tabs Functionaity
+        const start = e.target.selectionStart;
+        const end = e.target.selectionEnd;
+        const before = content.substring(0, start);
+        const selected = content.substring(start, end);
+        const after = content.substring(end);
+
+        // Tabs Functionality
         if (e.key === "Tab") {
-            e.preventDefault();
-
-            const start = e.target.selectionStart;
-            const end = e.target.selectionEnd;
-
             const newValue =
                 content.substring(0, start) +
                 "    " + // 4 spaces (you can use "\t" instead)
@@ -21,10 +22,52 @@ export default function Editor({
 
             setContent(newValue);
 
-            // Move cursor after inserted tab
             setTimeout(() => {
                 e.target.selectionStart = e.target.selectionEnd = start + 4;
             }, 0);
+        }
+
+        // Shortcut Functionality
+        const isCtrl = e.ctrlKey || e.metaKey; // supports Win / Mac / Linux
+
+        if (!isCtrl) return;
+
+        const wrap = (prefix, suffix = prefix) => {
+            e.preventDefault();
+
+            const newText = before + prefix + selected + suffix + after;
+            setContent(newText);
+
+            setTimeout(() => {
+                e.target.selectionStart = start + prefix.length;
+                e.target.selectionEnd = end + prefix.length;
+            }, 0);
+        };
+
+        switch (e.key.toLowerCase()) {
+            case "b":
+                wrap("**"); // bold
+                break;
+            case "i":
+                wrap("*"); // italic
+                break;
+            case "k":
+                wrap("`"); // inline code
+                break;
+            case "s":
+                wrap("~~"); // strikethrough
+                break;
+            case "h":
+                wrap("=="); // highlight (need implementation in preview side!)
+                break;
+            case "e":
+                // code block
+                e.preventDefault();
+                const block = `\n\`\`\`\n${selected}\n\`\`\`\n`;
+                setContent(before + block + after);
+                break;
+            default:
+                break;
         }
     }
 

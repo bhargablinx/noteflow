@@ -8,8 +8,8 @@ export default function Editor({
 }) {
     function shortcutFunctionality(e) {
         const textarea = e.target;
-        const start = e.target.selectionStart;
-        const end = e.target.selectionEnd;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
         const before = content.substring(0, start);
         let selected = content.substring(start, end);
         const after = content.substring(end);
@@ -106,9 +106,6 @@ export default function Editor({
                 break;
             case "i":
                 toggleWrap("*", "*", "italic");
-                break;
-            case "k":
-                toggleWrap("`", "`", "code");
                 break;
             case "s":
                 if (e.shiftKey) {

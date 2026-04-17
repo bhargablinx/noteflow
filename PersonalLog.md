@@ -31,11 +31,12 @@ There will be two layouts which will have different visuals:
 
 ### 16-04-2026
 
-- [ ] Beautify markdown editor
-- [ ] Add Shortcut functionality
+- [x] Beautify markdown editor
+- [x] Add Shortcut functionality
 - [ ] Sync descriptionPreview & content
 - [ ] Dynamic sidebar
 - [ ] Improve create note modal
 - [ ] Show already created tags
 - [ ] tags recommendation
 - [ ] tags color specification
+- [ ] Header bar with B I U etc.

@@ -34,7 +34,7 @@ There will be two layouts which will have different visuals:
 - [x] Beautify markdown editor
 - [x] Add Shortcut functionality
 - [x] Sync descriptionPreview & content
-- [ ] Dynamic sidebar
+- [x] Dynamic sidebar
 - [ ] Improve create note modal
 - [ ] Show already created tags
 - [ ] tags recommendation

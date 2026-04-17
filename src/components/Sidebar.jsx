@@ -1,15 +1,6 @@
 import { useContext } from "react";
 import { NotesContext } from "../context/NotesContext";
 
-// const notes = [
-//     "Project Phoenix Brainstorm",
-//     "Weekly Grocery List",
-//     "Physics Study Notes",
-//     "Meeting Minutes 10/26",
-//     "Vacation Ideas",
-//     "Code Snippets",
-// ];
-
 export default function Sidebar() {
     const { notes } = useContext(NotesContext);
 

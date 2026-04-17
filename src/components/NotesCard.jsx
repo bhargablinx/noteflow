@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useRef, useEffect, useContext } from "react";
 import { NotesContext } from "../context/NotesContext";
 
 export default function NotesCard({
@@ -10,7 +10,7 @@ export default function NotesCard({
     onClick,
 }) {
     const { flashNoteIndex } = useContext(NotesContext);
-
+    const ref = useRef(null);
     const isFlashing = flashNoteIndex === index;
 
     // Tag color variations
@@ -22,10 +22,20 @@ export default function NotesCard({
         "bg-yellow-100 text-yellow-600",
     ];
 
+    useEffect(() => {
+        if (isFlashing && ref.current) {
+            ref.current.scrollIntoView({
+                behavior: "smooth",
+                block: "center", // keeps it nicely centered
+            });
+        }
+    }, [isFlashing]);
+
     return (
         <div
+            ref={ref}
             onClick={onClick}
-            className={`p-4 rounded-xl transition-all duration-500 cursor-pointer border
+            className={`p-4 rounded-xl transition-all duration-500 cursor-pointer border shadow-sm hover:shadow-md dark:shadow-gray-800/30
                     ${
                         isFlashing
                             ? "bg-blue-100 dark:bg-blue-900 border-blue-400 scale-[1.02]"
@@ -37,7 +47,7 @@ export default function NotesCard({
                 {title}
             </h2>
 
-            {/* Description */}
+            {/* Description / Content Preview */}
             <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 line-clamp-1">
                 {content}
             </p>

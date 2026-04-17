@@ -44,9 +44,10 @@ export default function Layout1({ onSelectNote }) {
             {/* Notes */}
             <div className="space-y-4">
                 {/* Card */}
-                {notes.map((note) => (
+                {notes.map((note, index) => (
                     <NotesCard
                         key={note.id}
+                        index={index}
                         title={note.title}
                         content={note.content}
                         tags={note.tags}

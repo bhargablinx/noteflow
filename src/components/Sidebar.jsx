@@ -2,7 +2,8 @@ import { useContext } from "react";
 import { NotesContext } from "../context/NotesContext";
 
 export default function Sidebar() {
-    const { notes } = useContext(NotesContext);
+    const { notes, flashNoteIndex, setFlashNoteIndex } =
+        useContext(NotesContext);
 
     const notesTitle = notes.map((note) => note.title);
 
@@ -12,6 +13,13 @@ export default function Sidebar() {
                 {notesTitle.map((title, index) => (
                     <li
                         key={index}
+                        onClick={() => {
+                            setFlashNoteIndex(index);
+
+                            setTimeout(() => {
+                                setFlashNoteIndex(null);
+                            }, 1000);
+                        }}
                         className="p-2 rounded-lg cursor-pointer 
                 hover:bg-gray-200 dark:hover:bg-gray-800 
                 text-gray-800 dark:text-gray-200 

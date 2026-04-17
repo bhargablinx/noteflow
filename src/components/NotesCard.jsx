@@ -1,10 +1,18 @@
+import { useContext } from "react";
+import { NotesContext } from "../context/NotesContext";
+
 export default function NotesCard({
     title,
+    index,
     content,
     tags = [],
     lastEdited,
     onClick,
 }) {
+    const { flashNoteIndex } = useContext(NotesContext);
+
+    const isFlashing = flashNoteIndex === index;
+
     // Tag color variations
     const tagColors = [
         "bg-blue-100 text-blue-600",
@@ -17,8 +25,12 @@ export default function NotesCard({
     return (
         <div
             onClick={onClick}
-            className="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-sm hover:shadow-md 
-    dark:shadow-gray-800/30 transition-all duration-300 cursor-pointer border border-transparent dark:border-gray-800"
+            className={`p-4 rounded-xl transition-all duration-500 cursor-pointer border
+                    ${
+                        isFlashing
+                            ? "bg-blue-100 dark:bg-blue-900 border-blue-400 scale-[1.02]"
+                            : "bg-white dark:bg-gray-900 border-transparent dark:border-gray-800"
+                    }`}
         >
             {/* Title */}
             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">

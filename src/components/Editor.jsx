@@ -8,19 +8,20 @@ export default function Editor({
 }) {
     function shortcutFunctionality(e) {
         const textarea = e.target;
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        const before = content.substring(0, start);
-        let selected = content.substring(start, end);
-        const after = content.substring(end);
 
-        // Tabs Functionality
+        // -------- TAB HANDLING --------
         if (e.key === "Tab") {
             e.preventDefault();
 
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+
+            const before = content.substring(0, start);
+            const selected = content.substring(start, end);
+            const after = content.substring(end);
+
             const spaces = "    ";
 
-            // Multi-line support
             if (selected.includes("\n")) {
                 const indented = selected
                     .split("\n")
@@ -47,88 +48,114 @@ export default function Editor({
             return;
         }
 
-        // Shortcut Functionality
-        const isCtrl = e.ctrlKey || e.metaKey; // supports Win / Mac / Linux
-
-        if (!isCtrl) return;
+        // -------- SHORTCUTS --------
+        const isMod = e.ctrlKey || e.metaKey;
+        if (!isMod) return;
 
         const toggleWrap = (prefix, suffix = prefix, placeholder = "text") => {
             e.preventDefault();
 
-            const beforePrefix = content.substring(
-                start - prefix.length,
-                start,
-            );
-            const afterSuffix = content.substring(end, end + suffix.length);
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const value = textarea.value;
+
+            const selected = value.substring(start, end);
+
+            const beforePrefix =
+                start >= prefix.length
+                    ? value.substring(start - prefix.length, start)
+                    : "";
+
+            const afterSuffix = value.substring(end, end + suffix.length);
 
             // NO SELECTION
             if (start === end) {
-                const newText = before + prefix + placeholder + suffix + after;
-                setContent(newText);
-                setTimeout(() => {
-                    textarea.selectionStart = start + prefix.length;
-                    textarea.selectionEnd =
-                        start + prefix.length + placeholder.length;
-                }, 0);
+                const insert = prefix + placeholder + suffix;
 
+                textarea.setRangeText(insert, start, end, "select");
+
+                textarea.selectionStart = start + prefix.length;
+                textarea.selectionEnd =
+                    start + prefix.length + placeholder.length;
+
+                setContent(textarea.value);
                 return;
             }
 
-            // ALREADY WRAPPED
+            // ALREADY WRAPPED → unwrap
             if (beforePrefix === prefix && afterSuffix === suffix) {
-                const newText =
-                    content.substring(0, start - prefix.length) +
-                    selected +
-                    content.substring(end + suffix.length);
+                textarea.setRangeText(
+                    selected,
+                    start - prefix.length,
+                    end + suffix.length,
+                    "select",
+                );
 
-                setContent(newText);
+                textarea.selectionStart = start - prefix.length;
+                textarea.selectionEnd = end - prefix.length;
 
-                setTimeout(() => {
-                    textarea.selectionStart = start - prefix.length;
-                    textarea.selectionEnd = end - prefix.length;
-                }, 0);
-
+                setContent(textarea.value);
                 return;
             }
 
             // WRAP
-            const newText = before + prefix + selected + suffix + after;
-            setContent(newText);
-            setTimeout(() => {
-                textarea.selectionStart = start + prefix.length;
-                textarea.selectionEnd = end + prefix.length;
-            }, 0);
+            textarea.setRangeText(
+                prefix + selected + suffix,
+                start,
+                end,
+                "select",
+            );
+
+            textarea.selectionStart = start + prefix.length;
+            textarea.selectionEnd = end + prefix.length;
+
+            setContent(textarea.value);
         };
 
         switch (e.key.toLowerCase()) {
             case "b":
                 toggleWrap("**", "**", "bold");
                 break;
+
             case "i":
                 toggleWrap("*", "*", "italic");
                 break;
+
             case "s":
                 if (e.shiftKey) {
-                    toggleWrap("~~", "~~", "strike"); // Shit + S
+                    toggleWrap("~~", "~~", "strike");
                 }
                 break;
+
             case "h":
-                toggleWrap("==", "==", "highlight"); // highlight (need implementation in preview side!)
+                toggleWrap("==", "==", "highlight");
                 break;
-            case "e":
-                // code block
+
+            case "e": {
                 e.preventDefault();
+
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const value = textarea.value;
+
+                const before = value.substring(0, start);
+                const selected = value.substring(start, end);
+                const after = value.substring(end);
 
                 const block = `\n\`\`\`\n${selected || "code"}\n\`\`\`\n`;
 
-                setContent(before + block + after);
+                const newText = before + block + after;
+                setContent(newText);
 
                 setTimeout(() => {
-                    textarea.selectionStart = start + 5; // inside code block
+                    textarea.selectionStart = start + 5;
                     textarea.selectionEnd =
                         start + 5 + (selected || "code").length;
                 }, 0);
+
                 break;
+            }
+
             default:
                 break;
         }

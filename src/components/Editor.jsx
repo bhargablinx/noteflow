@@ -16,16 +16,35 @@ export default function Editor({
 
         // Tabs Functionality
         if (e.key === "Tab") {
-            const newValue =
-                content.substring(0, start) +
-                "    " + // 4 spaces (you can use "\t" instead)
-                content.substring(end);
+            e.preventDefault();
 
-            setContent(newValue);
+            const spaces = "    ";
 
-            setTimeout(() => {
-                e.target.selectionStart = e.target.selectionEnd = start + 4;
-            }, 0);
+            // Multi-line support
+            if (selected.includes("\n")) {
+                const indented = selected
+                    .split("\n")
+                    .map((line) => spaces + line)
+                    .join("\n");
+
+                const newText = before + indented + after;
+                setContent(newText);
+
+                setTimeout(() => {
+                    textarea.selectionStart = start;
+                    textarea.selectionEnd = start + indented.length;
+                }, 0);
+            } else {
+                const newText = before + spaces + after;
+                setContent(newText);
+
+                setTimeout(() => {
+                    textarea.selectionStart = textarea.selectionEnd =
+                        start + spaces.length;
+                }, 0);
+            }
+
+            return;
         }
 
         // Shortcut Functionality

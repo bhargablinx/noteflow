@@ -7,7 +7,7 @@ export const NotesProvider = ({ children }) => {
         {
             id: 1,
             title: "Project Phoenix Brainstorm",
-            descriptionPreview:
+            content:
                 "Brainstorm ideas for the new SaaS product. Focus on scalability, pricing model, and MVP features.",
             tags: ["#work", "#startup", "#ideas"],
             lastEdited: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
@@ -15,7 +15,7 @@ export const NotesProvider = ({ children }) => {
         {
             id: 2,
             title: "Weekly Grocery List",
-            descriptionPreview:
+            content:
                 "Milk, eggs, bread, fruits, vegetables, and snacks for the week. Also check discounts.",
             tags: ["#personal", "#shopping"],
             lastEdited: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 hours ago
@@ -23,7 +23,7 @@ export const NotesProvider = ({ children }) => {
         {
             id: 3,
             title: "Physics Study Notes",
-            descriptionPreview:
+            content:
                 "Revise kinematics, laws of motion, and numerical problems for upcoming test.",
             tags: ["#study", "#physics"],
             lastEdited: new Date(
@@ -33,7 +33,7 @@ export const NotesProvider = ({ children }) => {
         {
             id: 4,
             title: "Meeting Minutes 10/26",
-            descriptionPreview:
+            content:
                 "Discussed sprint progress, blockers, and next steps. Assigned tasks to team members.",
             tags: ["#work", "#meeting"],
             lastEdited: new Date(

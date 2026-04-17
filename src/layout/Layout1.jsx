@@ -48,7 +48,7 @@ export default function Layout1({ onSelectNote }) {
                     <NotesCard
                         key={note.id}
                         title={note.title}
-                        descriptionPreview={note.descriptionPreview}
+                        content={note.content}
                         tags={note.tags}
                         lastEdited={getTimeAgo(note.lastEdited)}
                         onClick={() => onSelectNote(note)}

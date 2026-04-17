@@ -1,6 +1,6 @@
 export default function NotesCard({
     title,
-    descriptionPreview,
+    content,
     tags = [],
     lastEdited,
     onClick,
@@ -27,7 +27,7 @@ export default function NotesCard({
 
             {/* Description */}
             <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 line-clamp-1">
-                {descriptionPreview}
+                {content}
             </p>
 
             {/* Tags */}

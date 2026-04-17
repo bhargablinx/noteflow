@@ -70,13 +70,13 @@ export default function Editor({
 
             // NO SELECTION
             if (start === end) {
-                const insert = prefix + placeholder + suffix;
+                const insert = prefix + suffix;
 
-                textarea.setRangeText(insert, start, end, "select");
+                textarea.setRangeText(insert, start, end, "end");
 
-                textarea.selectionStart = start + prefix.length;
-                textarea.selectionEnd =
-                    start + prefix.length + placeholder.length;
+                // place cursor in between
+                const cursorPos = start + prefix.length;
+                textarea.selectionStart = textarea.selectionEnd = cursorPos;
 
                 setContent(textarea.value);
                 return;

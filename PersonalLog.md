@@ -33,7 +33,7 @@ There will be two layouts which will have different visuals:
 
 - [x] Beautify markdown editor
 - [x] Add Shortcut functionality
-- [ ] Sync descriptionPreview & content
+- [x] Sync descriptionPreview & content
 - [ ] Dynamic sidebar
 - [ ] Improve create note modal
 - [ ] Show already created tags

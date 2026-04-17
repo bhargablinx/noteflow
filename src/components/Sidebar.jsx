@@ -1,17 +1,24 @@
-const notes = [
-    "Project Phoenix Brainstorm",
-    "Weekly Grocery List",
-    "Physics Study Notes",
-    "Meeting Minutes 10/26",
-    "Vacation Ideas",
-    "Code Snippets",
-];
+import { useContext } from "react";
+import { NotesContext } from "../context/NotesContext";
+
+// const notes = [
+//     "Project Phoenix Brainstorm",
+//     "Weekly Grocery List",
+//     "Physics Study Notes",
+//     "Meeting Minutes 10/26",
+//     "Vacation Ideas",
+//     "Code Snippets",
+// ];
 
 export default function Sidebar() {
+    const { notes } = useContext(NotesContext);
+
+    const notesTitle = notes.map((note) => note.title);
+
     return (
         <aside className="w-64 bg-gray-100 dark:bg-gray-900 h-full p-4 transition-colors duration-300">
             <ul className="space-y-2">
-                {notes.map((note, index) => (
+                {notesTitle.map((title, index) => (
                     <li
                         key={index}
                         className="p-2 rounded-lg cursor-pointer 
@@ -19,7 +26,7 @@ export default function Sidebar() {
                 text-gray-800 dark:text-gray-200 
                 transition-colors duration-200"
                     >
-                        {note}
+                        {title}
                     </li>
                 ))}
             </ul>

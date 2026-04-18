@@ -38,5 +38,5 @@ There will be two layouts which will have different visuals:
 - [x] Improve create note modal
 - [ ] ~~Show already created tags~~
 - [ ] ~~tags recommendation~~
-- [ ] ~~tags color specification~~
+- [x] tags color specification
 - [x] Header bar with B I U etc.

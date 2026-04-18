@@ -9,9 +9,11 @@ export default function Layout2({ selectedNote, onBack }) {
     const [content, setContent] = useState("");
     const { notes, setNotes } = useContext(NotesContext);
     const debounceRef = useRef(null);
+    const isFirstLoad = useRef(true);
+    const [saveStatus, setSaveStatus] = useState("idle");
 
     useEffect(() => {
-        if (!selectedNote) return;
+        if (!selectedNote?.id) return;
 
         setTitle(selectedNote.title || "");
         setTags((selectedNote.tags || []).join(", "));
@@ -19,16 +21,26 @@ export default function Layout2({ selectedNote, onBack }) {
     }, [selectedNote?.id]);
 
     useEffect(() => {
-        if (!selectedNote.id) return;
+        if (isFirstLoad.current) {
+            isFirstLoad.current = false;
+            return;
+        }
 
-        // clear previous timer
+        if (!selectedNote?.id) return;
+
+        // show saving immediately when user types
+        setSaveStatus("saving");
+
         if (debounceRef.current) {
             clearTimeout(debounceRef.current);
         }
 
         debounceRef.current = setTimeout(() => {
             handleSave();
-        }, 500); // adjust delay (300–800ms feels good)
+            setSaveStatus("saved");
+
+            setTimeout(() => setSaveStatus("idle"), 1500);
+        }, 500);
 
         return () => clearTimeout(debounceRef.current);
     }, [title, content, tags]);
@@ -38,13 +50,24 @@ export default function Layout2({ selectedNote, onBack }) {
             prevNotes.map((note) => {
                 if (note.id !== selectedNote.id) return note;
 
+                const newTags = tags
+                    .split(",")
+                    .map((t) => t.trim())
+                    .filter(Boolean);
+
+                // if nothing changed skip
+                if (
+                    note.title === title &&
+                    note.content === content &&
+                    JSON.stringify(note.tags) === JSON.stringify(newTags)
+                ) {
+                    return note;
+                }
+
                 return {
                     ...note,
                     title,
-                    tags: tags
-                        .split(",")
-                        .map((t) => t.trim())
-                        .filter(Boolean),
+                    tags: newTags,
                     content,
                     lastEdited: new Date(),
                 };
@@ -62,6 +85,11 @@ export default function Layout2({ selectedNote, onBack }) {
                 >
                     ← Back
                 </button>
+
+                <span className="text-sm text-gray-400">
+                    {saveStatus === "saving" && "Saving..."}
+                    {saveStatus === "saved" && "Saved ✓"}
+                </span>
 
                 <button
                     onClick={handleSave}

@@ -1,3 +1,60 @@
+export const toggleWrapUtil = (
+    textarea,
+    setContent,
+    prefix,
+    suffix = prefix,
+) => {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const value = textarea.value;
+
+    const selected = value.substring(start, end);
+
+    const beforePrefix =
+        start >= prefix.length
+            ? value.substring(start - prefix.length, start)
+            : "";
+
+    const afterSuffix = value.substring(end, end + suffix.length);
+
+    // NO SELECTION
+    if (start === end) {
+        const insert = prefix + suffix;
+
+        textarea.setRangeText(insert, start, end, "end");
+
+        const cursorPos = start + prefix.length;
+        textarea.selectionStart = textarea.selectionEnd = cursorPos;
+
+        setContent(textarea.value);
+        return;
+    }
+
+    // UNWRAP
+    if (beforePrefix === prefix && afterSuffix === suffix) {
+        textarea.setRangeText(
+            selected,
+            start - prefix.length,
+            end + suffix.length,
+            "select",
+        );
+
+        textarea.selectionStart = start - prefix.length;
+        textarea.selectionEnd = end - prefix.length;
+
+        setContent(textarea.value);
+        return;
+    }
+
+    // WRAP
+    textarea.setRangeText(prefix + selected + suffix, start, end, "select");
+
+    textarea.selectionStart = start + prefix.length;
+    textarea.selectionEnd = end + prefix.length;
+
+    setContent(textarea.value);
+};
+
 export default function Editor({
     title,
     setTitle,
@@ -5,6 +62,7 @@ export default function Editor({
     setTags,
     content,
     setContent,
+    textareaRef,
 }) {
     function shortcutFunctionality(e) {
         const textarea = e.target;
@@ -196,6 +254,7 @@ export default function Editor({
             />
 
             <textarea
+                ref={textareaRef}
                 placeholder="Start writing in markdown..."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}

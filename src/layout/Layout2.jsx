@@ -2,6 +2,8 @@ import { useState, useEffect, useContext, useRef } from "react";
 import Editor from "../components/Editor";
 import Preview from "../components/Preview";
 import { NotesContext } from "../context/NotesContext";
+import Toolbar from "../components/Toolbar";
+import { toggleWrapUtil } from "../components/Editor";
 
 export default function Layout2({ selectedNote, onBack }) {
     const [title, setTitle] = useState("");
@@ -11,6 +13,7 @@ export default function Layout2({ selectedNote, onBack }) {
     const debounceRef = useRef(null);
     const isFirstLoad = useRef(true);
     const [saveStatus, setSaveStatus] = useState("idle");
+    const textareaRef = useRef();
 
     useEffect(() => {
         if (!selectedNote?.id) return;
@@ -75,6 +78,92 @@ export default function Layout2({ selectedNote, onBack }) {
         );
     };
 
+    const handleToolbarAction = (type) => {
+        const textarea = textareaRef.current;
+        if (!textarea) return;
+
+        switch (type) {
+            case "bold":
+                toggleWrapUtil(textarea, setContent, "**");
+                break;
+
+            case "italic":
+                toggleWrapUtil(textarea, setContent, "*");
+                break;
+
+            case "underline":
+                toggleWrapUtil(textarea, setContent, "<u>", "</u>");
+                break;
+
+            case "highlight":
+                toggleWrapUtil(textarea, setContent, "==");
+                break;
+
+            case "link":
+                toggleWrapUtil(textarea, setContent, "[", "](url)");
+                break;
+
+            case "image":
+                toggleWrapUtil(textarea, setContent, "![alt]", "(url)");
+                break;
+
+            case "h1":
+                textarea.setRangeText(
+                    "\n# ",
+                    textarea.selectionStart,
+                    textarea.selectionEnd,
+                    "end",
+                );
+                setContent(textarea.value);
+                break;
+
+            case "h2":
+                textarea.setRangeText(
+                    "\n## ",
+                    textarea.selectionStart,
+                    textarea.selectionEnd,
+                    "end",
+                );
+                setContent(textarea.value);
+                break;
+
+            case "ul":
+                textarea.setRangeText(
+                    "\n- ",
+                    textarea.selectionStart,
+                    textarea.selectionEnd,
+                    "end",
+                );
+                setContent(textarea.value);
+                break;
+
+            case "ol":
+                textarea.setRangeText(
+                    "\n1. ",
+                    textarea.selectionStart,
+                    textarea.selectionEnd,
+                    "end",
+                );
+                setContent(textarea.value);
+                break;
+
+            case "checkbox":
+                textarea.setRangeText(
+                    "\n- [ ] ",
+                    textarea.selectionStart,
+                    textarea.selectionEnd,
+                    "end",
+                );
+                setContent(textarea.value);
+                break;
+
+            default:
+                break;
+        }
+
+        textarea.focus(); // important
+    };
+
     return (
         <div className="flex flex-col h-full bg-white dark:bg-gray-950">
             {/* Top Bar */}
@@ -101,20 +190,27 @@ export default function Layout2({ selectedNote, onBack }) {
 
             {/* Editor + Preview */}
             <div className="flex flex-1 overflow-hidden">
-                {/* Editor */}
-                <Editor
-                    title={title}
-                    setTitle={setTitle}
-                    tags={tags}
-                    setTags={setTags}
-                    content={content}
-                    setContent={setContent}
-                />
+                {/* LEFT SIDE */}
+                <div className="flex flex-col flex-1 min-w-0">
+                    <div className="px-6 sticky top-0 z-10 bg-white dark:bg-gray-950">
+                        <Toolbar onAction={handleToolbarAction} />
+                    </div>
+
+                    <Editor
+                        title={title}
+                        setTitle={setTitle}
+                        tags={tags}
+                        setTags={setTags}
+                        content={content}
+                        setContent={setContent}
+                        textareaRef={textareaRef}
+                    />
+                </div>
 
                 {/* Divider */}
                 <div className="w-px bg-gray-200 dark:bg-gray-800" />
 
-                {/* Preview */}
+                {/* RIGHT SIDE */}
                 <Preview title={title} tags={tags} content={content} />
             </div>
         </div>

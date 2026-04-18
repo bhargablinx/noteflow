@@ -16,6 +16,7 @@ export default function Layout2({ selectedNote, onBack }) {
     const textareaRef = useRef();
     const [history, setHistory] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(-1);
+    const historyDebounceRef = useRef(null);
 
     useEffect(() => {
         if (!selectedNote?.id) return;
@@ -50,6 +51,15 @@ export default function Layout2({ selectedNote, onBack }) {
         return () => clearTimeout(debounceRef.current);
     }, [title, content, tags]);
 
+    useEffect(() => {
+        if (!selectedNote?.id) return;
+
+        const initialContent = selectedNote.content || "";
+
+        setHistory([initialContent]);
+        setCurrentIndex(0);
+    }, [selectedNote?.id]);
+
     const handleUndo = () => {
         if (currentIndex > 0) {
             const newIndex = currentIndex - 1;
@@ -72,14 +82,29 @@ export default function Layout2({ selectedNote, onBack }) {
     };
 
     const saveToHistory = (newContent) => {
-        const newHistory = history.slice(0, currentIndex + 1);
+        if (historyDebounceRef.current) {
+            clearTimeout(historyDebounceRef.current);
+        }
 
-        newHistory.push(newContent);
+        historyDebounceRef.current = setTimeout(() => {
+            setHistory((prevHistory) => {
+                const trimmed = prevHistory.slice(0, currentIndex + 1);
 
-        if (newHistory.length > 50) newHistory.shift(); // limit
+                // Avoid duplicate entries
+                if (trimmed[trimmed.length - 1] === newContent) {
+                    return trimmed;
+                }
 
-        setHistory(newHistory);
-        setCurrentIndex(newHistory.length - 1);
+                const updated = [...trimmed, newContent];
+
+                // limit history
+                if (updated.length > 50) updated.shift();
+
+                setCurrentIndex(updated.length - 1);
+
+                return updated;
+            });
+        }, 600); // (500–800ms feels natural)
     };
 
     const handleSave = () => {

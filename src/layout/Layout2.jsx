@@ -54,9 +54,9 @@ export default function Layout2({ selectedNote, onBack }) {
     useEffect(() => {
         if (!selectedNote?.id) return;
 
-        const initialContent = selectedNote.content || "";
+        const initial = selectedNote.content || "";
 
-        setHistory([initialContent]);
+        setHistory([initial]);
         setCurrentIndex(0);
     }, [selectedNote?.id]);
 
@@ -76,9 +76,66 @@ export default function Layout2({ selectedNote, onBack }) {
         }
     };
 
+    const scheduleHistorySave = (newContent) => {
+        if (historyDebounceRef.current) {
+            clearTimeout(historyDebounceRef.current);
+        }
+
+        historyDebounceRef.current = setTimeout(() => {
+            setHistory((prevHistory) => {
+                const trimmed = prevHistory.slice(0, currentIndex + 1);
+
+                // prevent duplicate entries
+                if (trimmed[trimmed.length - 1] === newContent) {
+                    return trimmed;
+                }
+
+                const updated = [...trimmed, newContent];
+
+                if (updated.length > 50) updated.shift();
+
+                setCurrentIndex(updated.length - 1);
+
+                return updated;
+            });
+        }, 600);
+    };
+
     const updateContent = (value) => {
+        const lastChar = value.slice(-1);
+
         setContent(value);
-        saveToHistory(value);
+
+        // ✅ Save immediately on word boundary
+        if (lastChar === " " || lastChar === "." || lastChar === "\n") {
+            flushHistoryNow(value);
+            return;
+        }
+
+        // otherwise debounce
+        scheduleHistorySave(value);
+    };
+
+    const flushHistoryNow = (newContent) => {
+        if (historyDebounceRef.current) {
+            clearTimeout(historyDebounceRef.current);
+        }
+
+        setHistory((prevHistory) => {
+            const trimmed = prevHistory.slice(0, currentIndex + 1);
+
+            if (trimmed[trimmed.length - 1] === newContent) {
+                return trimmed;
+            }
+
+            const updated = [...trimmed, newContent];
+
+            if (updated.length > 50) updated.shift();
+
+            setCurrentIndex(updated.length - 1);
+
+            return updated;
+        });
     };
 
     const saveToHistory = (newContent) => {
@@ -143,10 +200,12 @@ export default function Layout2({ selectedNote, onBack }) {
 
         switch (type) {
             case "bold":
+                flushHistoryNow(content);
                 toggleWrapUtil(textarea, updateContent, "**");
                 break;
 
             case "italic":
+                flushHistoryNow(content);
                 toggleWrapUtil(textarea, updateContent, "*");
                 break;
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Editor from "../components/Editor";
 import Preview from "../components/Preview";
 
-export default function Layout2({ selectedNote, onSave, onBack }) {
+export default function Layout2({ selectedNote, onBack }) {
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState("");
     const [content, setContent] = useState("");
@@ -27,7 +27,8 @@ export default function Layout2({ selectedNote, onSave, onBack }) {
                 .filter(Boolean),
             content,
         };
-        onSave(updatedNote);
+
+        console.log(updatedNote);
     };
 
     return (

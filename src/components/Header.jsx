@@ -1,12 +1,23 @@
 import { useContext, useState } from "react";
 import { ThemeContext } from "../context/ThemeContext";
-import CreateNoteModal from "./CreateNoteModal";
 import { NotesContext } from "../context/NotesContext";
 
 export default function Header() {
     const { theme, setTheme } = useContext(ThemeContext);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const { notes, setNotes } = useContext(NotesContext);
+    const { notes, setNotes, setSelectedNoteId } = useContext(NotesContext);
+
+    const handleCreateNote = () => {
+        const newNote = {
+            id: Date.now(),
+            title: "",
+            content: "",
+            tags: [],
+            lastEdited: new Date().toISOString(),
+        };
+
+        setNotes((prev) => [newNote, ...prev]);
+        setSelectedNoteId(newNote.id);
+    };
 
     const handleSaveNote = (note) => {
         setNotes((prev) => [note, ...prev]);
@@ -36,7 +47,7 @@ export default function Header() {
                 <div className="flex items-center gap-[30px]">
                     <button
                         className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={handleCreateNote}
                     >
                         + Create Note
                     </button>
@@ -51,13 +62,6 @@ export default function Header() {
                     ></i>
                 </div>
             </header>
-
-            {/* Modal */}
-            <CreateNoteModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onSave={handleSaveNote}
-            />
         </div>
     );
 }

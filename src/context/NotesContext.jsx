@@ -98,12 +98,19 @@ export const NotesProvider = ({ children }) => {
             ).toISOString(),
         },
     ]);
-
+    const [selectedNoteId, setSelectedNoteId] = useState(null);
     const [flashNoteIndex, setFlashNoteIndex] = useState(null);
 
     return (
         <NotesContext.Provider
-            value={{ notes, setNotes, flashNoteIndex, setFlashNoteIndex }}
+            value={{
+                notes,
+                setNotes,
+                flashNoteIndex,
+                setFlashNoteIndex,
+                selectedNoteId,
+                setSelectedNoteId,
+            }}
         >
             {children}
         </NotesContext.Provider>

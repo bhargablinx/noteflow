@@ -127,6 +127,16 @@ export default function Layout2({ selectedNote, onBack }) {
                 setContent(textarea.value);
                 break;
 
+            case "h3":
+                textarea.setRangeText(
+                    "\n### ",
+                    textarea.selectionStart,
+                    textarea.selectionEnd,
+                    "end",
+                );
+                setContent(textarea.value);
+                break;
+
             case "ul":
                 textarea.setRangeText(
                     "\n- ",
@@ -155,6 +165,34 @@ export default function Layout2({ selectedNote, onBack }) {
                     "end",
                 );
                 setContent(textarea.value);
+                break;
+
+            case "codeblock":
+                toggleWrapUtil(textarea, setContent, "\n```\n", "\n```");
+                break;
+
+            case "quote":
+                textarea.setRangeText(
+                    "> ",
+                    textarea.selectionStart,
+                    textarea.selectionEnd,
+                    "end",
+                );
+                setContent(textarea.value);
+                break;
+
+            case "divider":
+                textarea.setRangeText(
+                    "--- \n",
+                    textarea.selectionStart,
+                    textarea.selectionEnd,
+                    "end",
+                );
+                setContent(textarea.value);
+                break;
+
+            case "strike":
+                toggleWrapUtil(textarea, setContent, "~~", "~~");
                 break;
 
             default:

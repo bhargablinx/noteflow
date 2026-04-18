@@ -35,7 +35,7 @@ There will be two layouts which will have different visuals:
 - [x] Add Shortcut functionality
 - [x] Sync descriptionPreview & content
 - [x] Dynamic sidebar
-- [ ] Improve create note modal
+- [x] Improve create note modal
 - [ ] Show already created tags
 - [ ] tags recommendation
 - [ ] tags color specification

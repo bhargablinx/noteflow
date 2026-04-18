@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import Editor from "../components/Editor";
 import Preview from "../components/Preview";
 import { NotesContext } from "../context/NotesContext";
@@ -8,6 +8,7 @@ export default function Layout2({ selectedNote, onBack }) {
     const [tags, setTags] = useState("");
     const [content, setContent] = useState("");
     const { notes, setNotes } = useContext(NotesContext);
+    const debounceRef = useRef(null);
 
     useEffect(() => {
         if (!selectedNote) return;
@@ -16,6 +17,21 @@ export default function Layout2({ selectedNote, onBack }) {
         setTags((selectedNote.tags || []).join(", "));
         setContent(selectedNote.content || "");
     }, [selectedNote?.id]);
+
+    useEffect(() => {
+        if (!selectedNote.id) return;
+
+        // clear previous timer
+        if (debounceRef.current) {
+            clearTimeout(debounceRef.current);
+        }
+
+        debounceRef.current = setTimeout(() => {
+            handleSave();
+        }, 500); // adjust delay (300–800ms feels good)
+
+        return () => clearTimeout(debounceRef.current);
+    }, [title, content, tags]);
 
     const handleSave = () => {
         setNotes((prevNotes) =>

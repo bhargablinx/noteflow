@@ -36,7 +36,7 @@ There will be two layouts which will have different visuals:
 - [x] Sync descriptionPreview & content
 - [x] Dynamic sidebar
 - [x] Improve create note modal
-- [ ] Show already created tags
-- [ ] tags recommendation
-- [ ] tags color specification
+- [ ] ~~Show already created tags~~
+- [ ] ~~tags recommendation~~
+- [ ] ~~tags color specification~~
 - [x] Header bar with B I U etc.

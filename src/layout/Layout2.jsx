@@ -20,7 +20,7 @@ export default function Layout2({ selectedNote, onBack }) {
     const handleSave = () => {
         setNotes((prevNotes) =>
             prevNotes.map((note) => {
-                if (note.id !== selectedNoteId) return note;
+                if (note.id !== selectedNote.id) return note;
 
                 return {
                     ...note,

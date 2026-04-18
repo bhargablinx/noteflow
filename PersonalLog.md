@@ -39,4 +39,4 @@ There will be two layouts which will have different visuals:
 - [ ] Show already created tags
 - [ ] tags recommendation
 - [ ] tags color specification
-- [ ] Header bar with B I U etc.
+- [x] Header bar with B I U etc.

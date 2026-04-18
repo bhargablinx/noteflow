@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Editor from "../components/Editor";
 import Preview from "../components/Preview";
+import { NotesContext } from "../context/NotesContext";
 
 export default function Layout2({ selectedNote, onBack }) {
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState("");
     const [content, setContent] = useState("");
+    const { notes, setNotes } = useContext(NotesContext);
 
     useEffect(() => {
         if (!selectedNote) return;
@@ -26,9 +28,14 @@ export default function Layout2({ selectedNote, onBack }) {
                 .map((t) => t.trim())
                 .filter(Boolean),
             content,
+            lastEdited: new Date(),
         };
 
-        console.log(updatedNote);
+        setNotes((prevNotes) =>
+            prevNotes.map((note) =>
+                note.id === selectedNote.id ? updatedNote : note,
+            ),
+        );
     };
 
     return (

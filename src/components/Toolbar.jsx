@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 export default function Toolbar({ onAction }) {
+    const [open, setOpen] = useState(false);
+
     const baseBtn =
         "flex items-center justify-center w-9 h-9 rounded-md text-gray-600 hover:bg-gray-200 hover:text-black transition";
 
@@ -43,25 +47,6 @@ export default function Toolbar({ onAction }) {
             {/* Divider */}
             <div className="w-px h-6 bg-gray-300 mx-1" />
 
-            {/* Headings */}
-            <button className={baseBtn} onClick={() => onAction("h1")}>
-                <span className="font-semibold">H1</span>
-            </button>
-            <button className={baseBtn} onClick={() => onAction("h2")}>
-                <span className="font-semibold">H2</span>
-            </button>
-            <button className={baseBtn} onClick={() => onAction("h3")}>
-                <span className="font-semibold">H3</span>
-            </button>
-
-            {/* Divider */}
-            <div className="w-px h-6 bg-gray-300 mx-1" />
-
-            {/* Checkbox */}
-            <button className={baseBtn} onClick={() => onAction("checkbox")}>
-                <i className="fa-solid fa-check"></i>
-            </button>
-
             {/* Code */}
             <button className={baseBtn} onClick={() => onAction("codeblock")}>
                 <i class="fa-solid fa-code"></i>
@@ -72,15 +57,70 @@ export default function Toolbar({ onAction }) {
                 <i class="fa-solid fa-quote-left"></i>
             </button>
 
-            {/* Divider */}
-            <button className={baseBtn} onClick={() => onAction("divider")}>
-                ⎯⎯
+            {/* Undo */}
+            <button className={baseBtn} onClick={() => onAction("undo")}>
+                <i class="fa-solid fa-rotate-left"></i>
             </button>
 
-            {/* Strikethrough */}
-            <button className={baseBtn} onClick={() => onAction("strike")}>
-                <i class="fa-solid fa-strikethrough"></i>
+            {/* Redo */}
+            <button className={baseBtn} onClick={() => onAction("redo")}>
+                <i class="fa-solid fa-rotate-right"></i>
             </button>
+
+            {/* MORE MENU */}
+            <div className="relative">
+                <button className={baseBtn} onClick={() => setOpen(!open)}>
+                    ⋯
+                </button>
+
+                {open && (
+                    <div className="absolute right-0 mt-2 w-auto bg-white border rounded-lg shadow-lg p-3 z-50">
+                        {/* Headings */}
+                        <button
+                            className={baseBtn}
+                            onClick={() => onAction("h1")}
+                        >
+                            <span className="font-semibold">H1</span>
+                        </button>
+                        <button
+                            className={baseBtn}
+                            onClick={() => onAction("h2")}
+                        >
+                            <span className="font-semibold">H2</span>
+                        </button>
+                        <button
+                            className={baseBtn}
+                            onClick={() => onAction("h3")}
+                        >
+                            <span className="font-semibold">H3</span>
+                        </button>
+
+                        {/* Checkbox */}
+                        <button
+                            className={baseBtn}
+                            onClick={() => onAction("checkbox")}
+                        >
+                            <i className="fa-solid fa-check"></i>
+                        </button>
+
+                        {/* Divider */}
+                        <button
+                            className={baseBtn}
+                            onClick={() => onAction("divider")}
+                        >
+                            ⎯⎯
+                        </button>
+
+                        {/* Strikethrough */}
+                        <button
+                            className={baseBtn}
+                            onClick={() => onAction("strike")}
+                        >
+                            <i class="fa-solid fa-strikethrough"></i>
+                        </button>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

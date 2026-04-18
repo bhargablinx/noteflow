@@ -14,6 +14,8 @@ export default function Layout2({ selectedNote, onBack }) {
     const isFirstLoad = useRef(true);
     const [saveStatus, setSaveStatus] = useState("idle");
     const textareaRef = useRef();
+    const [history, setHistory] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(-1);
 
     useEffect(() => {
         if (!selectedNote?.id) return;
@@ -47,6 +49,38 @@ export default function Layout2({ selectedNote, onBack }) {
 
         return () => clearTimeout(debounceRef.current);
     }, [title, content, tags]);
+
+    const handleUndo = () => {
+        if (currentIndex > 0) {
+            const newIndex = currentIndex - 1;
+            setCurrentIndex(newIndex);
+            setContent(history[newIndex]);
+        }
+    };
+
+    const handleRedo = () => {
+        if (currentIndex < history.length - 1) {
+            const newIndex = currentIndex + 1;
+            setCurrentIndex(newIndex);
+            setContent(history[newIndex]);
+        }
+    };
+
+    const updateContent = (value) => {
+        setContent(value);
+        saveToHistory(value);
+    };
+
+    const saveToHistory = (newContent) => {
+        const newHistory = history.slice(0, currentIndex + 1);
+
+        newHistory.push(newContent);
+
+        if (newHistory.length > 50) newHistory.shift(); // limit
+
+        setHistory(newHistory);
+        setCurrentIndex(newHistory.length - 1);
+    };
 
     const handleSave = () => {
         setNotes((prevNotes) =>
@@ -84,27 +118,27 @@ export default function Layout2({ selectedNote, onBack }) {
 
         switch (type) {
             case "bold":
-                toggleWrapUtil(textarea, setContent, "**");
+                toggleWrapUtil(textarea, updateContent, "**");
                 break;
 
             case "italic":
-                toggleWrapUtil(textarea, setContent, "*");
+                toggleWrapUtil(textarea, updateContent, "*");
                 break;
 
             case "underline":
-                toggleWrapUtil(textarea, setContent, "<u>", "</u>");
+                toggleWrapUtil(textarea, updateContent, "<u>", "</u>");
                 break;
 
             case "highlight":
-                toggleWrapUtil(textarea, setContent, "==");
+                toggleWrapUtil(textarea, updateContent, "==");
                 break;
 
             case "link":
-                toggleWrapUtil(textarea, setContent, "[", "](url)");
+                toggleWrapUtil(textarea, updateContent, "[", "](url)");
                 break;
 
             case "image":
-                toggleWrapUtil(textarea, setContent, "![alt]", "(url)");
+                toggleWrapUtil(textarea, updateContent, "![alt]", "(url)");
                 break;
 
             case "h1":
@@ -114,7 +148,7 @@ export default function Layout2({ selectedNote, onBack }) {
                     textarea.selectionEnd,
                     "end",
                 );
-                setContent(textarea.value);
+                updateContent(textarea.value);
                 break;
 
             case "h2":
@@ -124,7 +158,7 @@ export default function Layout2({ selectedNote, onBack }) {
                     textarea.selectionEnd,
                     "end",
                 );
-                setContent(textarea.value);
+                updateContent(textarea.value);
                 break;
 
             case "h3":
@@ -134,7 +168,7 @@ export default function Layout2({ selectedNote, onBack }) {
                     textarea.selectionEnd,
                     "end",
                 );
-                setContent(textarea.value);
+                updateContent(textarea.value);
                 break;
 
             case "ul":
@@ -144,7 +178,7 @@ export default function Layout2({ selectedNote, onBack }) {
                     textarea.selectionEnd,
                     "end",
                 );
-                setContent(textarea.value);
+                updateContent(textarea.value);
                 break;
 
             case "ol":
@@ -154,7 +188,7 @@ export default function Layout2({ selectedNote, onBack }) {
                     textarea.selectionEnd,
                     "end",
                 );
-                setContent(textarea.value);
+                updateContent(textarea.value);
                 break;
 
             case "checkbox":
@@ -164,11 +198,11 @@ export default function Layout2({ selectedNote, onBack }) {
                     textarea.selectionEnd,
                     "end",
                 );
-                setContent(textarea.value);
+                updateContent(textarea.value);
                 break;
 
             case "codeblock":
-                toggleWrapUtil(textarea, setContent, "\n```\n", "\n```");
+                toggleWrapUtil(textarea, updateContent, "\n```\n", "\n```");
                 break;
 
             case "quote":
@@ -178,7 +212,7 @@ export default function Layout2({ selectedNote, onBack }) {
                     textarea.selectionEnd,
                     "end",
                 );
-                setContent(textarea.value);
+                updateContent(textarea.value);
                 break;
 
             case "divider":
@@ -188,11 +222,19 @@ export default function Layout2({ selectedNote, onBack }) {
                     textarea.selectionEnd,
                     "end",
                 );
-                setContent(textarea.value);
+                updateContent(textarea.value);
                 break;
 
             case "strike":
-                toggleWrapUtil(textarea, setContent, "~~", "~~");
+                toggleWrapUtil(textarea, updateContent, "~~", "~~");
+                break;
+
+            case "undo":
+                handleUndo();
+                break;
+
+            case "redo":
+                handleRedo();
                 break;
 
             default:
@@ -240,7 +282,7 @@ export default function Layout2({ selectedNote, onBack }) {
                         tags={tags}
                         setTags={setTags}
                         content={content}
-                        setContent={setContent}
+                        setContent={updateContent}
                         textareaRef={textareaRef}
                     />
                 </div>

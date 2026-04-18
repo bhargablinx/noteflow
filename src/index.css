@@ -4,6 +4,10 @@
 @plugin "@tailwindcss/typography";
 @custom-variant dark (&:where(.dark, .dark *));
 
+.menu-item {
+    @apply block w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 text-sm;
+}
+
 @theme {
     --font-sans: "Inter", sans-serif;
     --font-mono: "JetBrains Mono", monospace;

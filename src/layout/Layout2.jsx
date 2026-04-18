@@ -18,23 +18,21 @@ export default function Layout2({ selectedNote, onBack }) {
     }, [selectedNote?.id]);
 
     const handleSave = () => {
-        if (!selectedNote) return;
-
-        const updatedNote = {
-            ...selectedNote,
-            title,
-            tags: tags
-                .split(",")
-                .map((t) => t.trim())
-                .filter(Boolean),
-            content,
-            lastEdited: new Date(),
-        };
-
         setNotes((prevNotes) =>
-            prevNotes.map((note) =>
-                note.id === selectedNote.id ? updatedNote : note,
-            ),
+            prevNotes.map((note) => {
+                if (note.id !== selectedNoteId) return note;
+
+                return {
+                    ...note,
+                    title,
+                    tags: tags
+                        .split(",")
+                        .map((t) => t.trim())
+                        .filter(Boolean),
+                    content,
+                    lastEdited: new Date(),
+                };
+            }),
         );
     };
 

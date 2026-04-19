@@ -6,26 +6,10 @@ import Layout1 from "./layout/Layout1";
 import Layout2 from "./layout/Layout2";
 
 function App() {
-    const { notes, setNotes, selectedNoteId, setSelectedNoteId } =
+    const { notes, selectedNoteId, setSelectedNoteId } =
         useContext(NotesContext);
 
     const selectedNote = notes.find((n) => n.id === selectedNoteId);
-
-    // When the site first loaded pull from localStorage
-    useEffect(() => {
-        const stored = localStorage.getItem("notes");
-
-        if (stored) {
-            setNotes(JSON.parse(stored));
-        } else {
-            setNotes([]); // fallback to empty array
-        }
-    }, []);
-
-    // Whenever notes changes save to localStorage
-    useEffect(() => {
-        localStorage.setItem("notes", JSON.stringify(notes));
-    }, [notes]);
 
     return (
         <div className="h-screen flex flex-col">

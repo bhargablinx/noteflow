@@ -6,6 +6,7 @@ import { NotesContext } from "../context/NotesContext";
 export default function Layout1({ onSelectNote }) {
     const { notes } = useContext(NotesContext);
     const [tick, setTick] = useState(0);
+    const [searchQuery, setSearchQuery] = useState("");
 
     function getTimeAgo(dateString) {
         const now = new Date();
@@ -36,15 +37,28 @@ export default function Layout1({ onSelectNote }) {
         return () => clearInterval(interval);
     }, []);
 
+    const filteredNotes = notes.filter((note) => {
+        const q = searchQuery.toLowerCase();
+
+        return (
+            (note.title || "").toLowerCase().includes(q) ||
+            (note.content || "").toLowerCase().includes(q) ||
+            (note.tags || []).some((tag) => tag.toLowerCase().includes(q))
+        );
+    });
+
     return (
         <main className="flex-1 p-6 space-y-4 bg-gray-50 dark:bg-gray-950 h-full overflow-y-auto transition-colors duration-300">
             {/* Search */}
-            <Searchbar />
+            <Searchbar
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+            />
 
             {/* Notes */}
             <div className="space-y-4">
                 {/* Card */}
-                {notes.map((note, index) => (
+                {filteredNotes.map((note, index) => (
                     <NotesCard
                         key={note.id}
                         index={index}
@@ -55,6 +69,9 @@ export default function Layout1({ onSelectNote }) {
                         onClick={() => onSelectNote(note)}
                     />
                 ))}
+                {filteredNotes.length === 0 && (
+                    <p className="text-sm text-gray-500">No notes found</p>
+                )}
             </div>
         </main>
     );

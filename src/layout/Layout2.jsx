@@ -107,7 +107,7 @@ export default function Layout2({ selectedNote, onBack }) {
 
         setContent(value);
 
-        // ✅ Save immediately on word boundary
+        // Save immediately on word boundary
         if (lastChar === " " || lastChar === "." || lastChar === "\n") {
             flushHistoryNow(value);
             return;
@@ -329,6 +329,26 @@ export default function Layout2({ selectedNote, onBack }) {
         textarea.focus(); // important
     };
 
+    const handleDelete = () => {
+        const confirmDelete = window.confirm("Delete this note?");
+        if (!confirmDelete) return;
+
+        // your delete logic here
+        console.log("Deleted");
+    };
+
+    const handleDownloadRaw = () => {
+        const blob = new Blob([content], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${title || "note"}.txt`;
+        a.click();
+
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <div className="flex flex-col h-full bg-white dark:bg-gray-950">
             {/* Top Bar */}
@@ -363,13 +383,30 @@ export default function Layout2({ selectedNote, onBack }) {
                         {isMoreOptOpen && (
                             <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 py-1">
                                 {/* Download */}
+                                <button
+                                    onClick={handleDownloadRaw}
+                                    className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                >
+                                    <i className="fa-solid fa-download"></i>
+                                    Download{" "}
+                                    <div className="text-gray-500 font-bold">
+                                        (raw)
+                                    </div>
+                                </button>
+
                                 <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <i className="fa-solid fa-download"></i>
-                                    Download
+                                    Download{" "}
+                                    <span className="text-gray-500 font-bold">
+                                        (pdf)
+                                    </span>
                                 </button>
 
                                 {/* Delete */}
-                                <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30">
+                                <button
+                                    onClick={handleDelete}
+                                    className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30"
+                                >
                                     <i className="fa-solid fa-trash"></i>
                                     Delete
                                 </button>

@@ -17,6 +17,7 @@ export default function Layout2({ selectedNote, onBack }) {
     const [history, setHistory] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(-1);
     const historyDebounceRef = useRef(null);
+    const [isMoreOptOpen, setIsMoreOptOpen] = useState(false);
 
     useEffect(() => {
         if (!selectedNote?.id) return;
@@ -344,12 +345,38 @@ export default function Layout2({ selectedNote, onBack }) {
                     {saveStatus === "saved" && "Saved ✓"}
                 </span>
 
-                <button
-                    onClick={handleSave}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-lg text-sm"
-                >
-                    Save
-                </button>
+                <div className="flex items-center gap-7">
+                    <button
+                        onClick={handleSave}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-lg text-sm"
+                    >
+                        Save
+                    </button>
+                    <div className="relative">
+                        <button
+                            onClick={() => setIsMoreOptOpen((prev) => !prev)}
+                            className="text-gray-900 dark:text-gray-300 font-extrabold px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                        >
+                            ⋯
+                        </button>
+
+                        {isMoreOptOpen && (
+                            <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 py-1">
+                                {/* Download */}
+                                <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <i className="fa-solid fa-download"></i>
+                                    Download
+                                </button>
+
+                                {/* Delete */}
+                                <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30">
+                                    <i className="fa-solid fa-trash"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
 
             {/* Editor + Preview */}

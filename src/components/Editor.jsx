@@ -1,3 +1,6 @@
+import { useContext, useEffect } from "react";
+import { NotesContext } from "../context/NotesContext";
+
 export const toggleWrapUtil = (
     textarea,
     setContent,
@@ -64,6 +67,8 @@ export default function Editor({
     setContent,
     textareaRef,
 }) {
+    const { selectedNoteId, upsertNote } = useContext(NotesContext);
+
     function shortcutFunctionality(e) {
         const textarea = e.target;
 
@@ -218,6 +223,24 @@ export default function Editor({
                 break;
         }
     }
+
+    useEffect(() => {
+        if (!selectedNoteId) return;
+
+        const timeout = setTimeout(() => {
+            upsertNote({
+                id: selectedNoteId,
+                title,
+                content,
+                tags: tags
+                    .split(",")
+                    .map((t) => t.trim())
+                    .filter(Boolean),
+            });
+        }, 400); // smooth delay like real apps
+
+        return () => clearTimeout(timeout);
+    }, [title, content, tags]);
 
     return (
         <div className="flex-1 min-w-0 px-6 py-4 flex flex-col gap-4">

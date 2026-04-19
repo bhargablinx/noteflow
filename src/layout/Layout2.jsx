@@ -59,7 +59,7 @@ export default function Layout2({ selectedNote, onBack }) {
 
         setHistory([initial]);
         setCurrentIndex(0);
-    }, [selectedNote?.id]);
+    }, [selectedNote]);
 
     const handleUndo = () => {
         if (currentIndex > 0) {
@@ -166,33 +166,42 @@ export default function Layout2({ selectedNote, onBack }) {
     };
 
     const handleSave = () => {
-        setNotes((prevNotes) =>
-            prevNotes.map((note) => {
-                if (note.id !== selectedNote.id) return note;
+        setNotes((prevNotes) => {
+            const newTags = tags
+                .split(",")
+                .map((t) => t.trim())
+                .filter(Boolean);
 
-                const newTags = tags
-                    .split(",")
-                    .map((t) => t.trim())
-                    .filter(Boolean);
+            const existing = prevNotes.find(
+                (note) => note.id === selectedNote.id,
+            );
 
-                // if nothing changed skip
-                if (
-                    note.title === title &&
-                    note.content === content &&
-                    JSON.stringify(note.tags) === JSON.stringify(newTags)
-                ) {
-                    return note;
-                }
+            // skip if nothing changed
+            if (
+                existing &&
+                existing.title === title &&
+                existing.content === content &&
+                JSON.stringify(existing.tags) === JSON.stringify(newTags)
+            ) {
+                return prevNotes;
+            }
 
-                return {
-                    ...note,
-                    title,
-                    tags: newTags,
-                    content,
-                    lastEdited: new Date(),
-                };
-            }),
-        );
+            const updatedNote = {
+                ...existing,
+                id: selectedNote.id,
+                title,
+                content,
+                tags: newTags,
+                lastEdited: new Date().toISOString(),
+            };
+
+            // remove old + add to top
+            const filtered = prevNotes.filter(
+                (note) => note.id !== selectedNote.id,
+            );
+
+            return [updatedNote, ...filtered];
+        });
     };
 
     const handleToolbarAction = (type) => {

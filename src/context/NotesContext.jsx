@@ -16,6 +16,20 @@ export const NotesProvider = ({ children }) => {
         setNotes(newNotes);
     };
 
+    const upsertNote = (updatedNote) => {
+        setNotes((prev) => {
+            const filtered = prev.filter((n) => n.id !== updatedNote.id);
+
+            return [
+                {
+                    ...updatedNote,
+                    lastEdited: new Date().toISOString(),
+                },
+                ...filtered,
+            ];
+        });
+    };
+
     useEffect(() => {
         localStorage.setItem("notes", JSON.stringify(notes));
     }, [notes]);
@@ -30,6 +44,7 @@ export const NotesProvider = ({ children }) => {
                 selectedNoteId,
                 setSelectedNoteId,
                 deleteNotes,
+                upsertNote,
             }}
         >
             {children}

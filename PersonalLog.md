@@ -43,9 +43,10 @@ There will be two layouts which will have different visuals:
 
 ### 19-04-2026
 
-- [ ] feat: Delete notes
-- [ ] Search notes
+- [x] feat: Delete notes
+- [x] Search notes
 - [ ] Make responsive for smaller screen
-- [ ] Newly updated notes stack above
+- [x] Newly updated notes stack above
 - [ ] Ctrl + S for saving notes
-- [ ] Export Notes
+- [x] Export Notes (raw)
+- [ ] Export Notes (pdf)

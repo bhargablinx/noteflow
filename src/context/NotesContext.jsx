@@ -11,6 +11,11 @@ export const NotesProvider = ({ children }) => {
     const [selectedNoteId, setSelectedNoteId] = useState(null);
     const [flashNoteIndex, setFlashNoteIndex] = useState(null);
 
+    const deleteNotes = (selectedNote) => {
+        const newNotes = notes.filter((note) => note.id != selectedNote.id);
+        setNotes(newNotes);
+    };
+
     useEffect(() => {
         localStorage.setItem("notes", JSON.stringify(notes));
     }, [notes]);
@@ -24,6 +29,7 @@ export const NotesProvider = ({ children }) => {
                 setFlashNoteIndex,
                 selectedNoteId,
                 setSelectedNoteId,
+                deleteNotes,
             }}
         >
             {children}

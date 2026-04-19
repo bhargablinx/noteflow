@@ -9,7 +9,7 @@ export default function Layout2({ selectedNote, onBack }) {
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState("");
     const [content, setContent] = useState("");
-    const { notes, setNotes } = useContext(NotesContext);
+    const { notes, setNotes, deleteNotes } = useContext(NotesContext);
     const debounceRef = useRef(null);
     const isFirstLoad = useRef(true);
     const [saveStatus, setSaveStatus] = useState("idle");
@@ -332,9 +332,7 @@ export default function Layout2({ selectedNote, onBack }) {
     const handleDelete = () => {
         const confirmDelete = window.confirm("Delete this note?");
         if (!confirmDelete) return;
-
-        // your delete logic here
-        console.log("Deleted");
+        deleteNotes(selectedNote);
     };
 
     const handleDownloadRaw = () => {

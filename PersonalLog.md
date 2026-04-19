@@ -26,7 +26,7 @@ There will be two layouts which will have different visuals:
     - [x] Where when the use click create notes a modal will be pop up that will show the user to add:
     - [x] title, tag, and there will be a text area to add our notes
     - [x] There will be a save button
-    - [ ] After clicking that the notes will the added to the local storage
+    - [x] After clicking that the notes will the added to the local storage
     - [x] And will be dynamically updated in the Layout 1 side bar and card will be added
 
 ### 16-04-2026
@@ -40,3 +40,12 @@ There will be two layouts which will have different visuals:
 - [ ] ~~tags recommendation~~
 - [x] tags color specification
 - [x] Header bar with B I U etc.
+
+### 19-04-2026
+
+- [ ] feat: Delete notes
+- [ ] Search notes
+- [ ] Make responsive for smaller screen
+- [ ] Newly updated notes stack above
+- [ ] Ctrl + S for saving notes
+- [ ] Export Notes

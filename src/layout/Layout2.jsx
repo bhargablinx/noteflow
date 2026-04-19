@@ -343,7 +343,7 @@ export default function Layout2({ selectedNote, onBack }) {
 
         const a = document.createElement("a");
         a.href = url;
-        a.download = `${title || "note"}.txt`;
+        a.download = `${title || "note"}.md`;
         a.click();
 
         URL.revokeObjectURL(url);

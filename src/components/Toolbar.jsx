@@ -4,10 +4,10 @@ export default function Toolbar({ onAction }) {
     const [open, setOpen] = useState(false);
 
     const baseBtn =
-        "flex items-center justify-center w-9 h-9 rounded-md text-gray-600 hover:bg-gray-200 hover:text-black transition";
+        "flex items-center justify-center w-9 h-9 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white transition";
 
     return (
-        <div className="flex items-center gap-1 border-b px-3 py-2 bg-white shadow-sm">
+        <div className="flex items-center gap-1 border-b px-3 py-2 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 shadow-sm">
             {/* Text styles */}
             <button className={baseBtn} onClick={() => onAction("bold")}>
                 <b>B</b>
@@ -19,11 +19,13 @@ export default function Toolbar({ onAction }) {
                 <u>U</u>
             </button>
             <button className={baseBtn} onClick={() => onAction("highlight")}>
-                <span className="bg-yellow-200 px-1 rounded">H</span>
+                <span className="bg-yellow-200 dark:bg-yellow-500/40 px-1 rounded">
+                    H
+                </span>
             </button>
 
             {/* Divider */}
-            <div className="w-px h-6 bg-gray-300 mx-1" />
+            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
 
             {/* Media */}
             <button className={baseBtn} onClick={() => onAction("link")}>
@@ -34,7 +36,7 @@ export default function Toolbar({ onAction }) {
             </button>
 
             {/* Divider */}
-            <div className="w-px h-6 bg-gray-300 mx-1" />
+            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
 
             {/* Lists */}
             <button className={baseBtn} onClick={() => onAction("ul")}>
@@ -45,7 +47,7 @@ export default function Toolbar({ onAction }) {
             </button>
 
             {/* Divider */}
-            <div className="w-px h-6 bg-gray-300 mx-1" />
+            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
 
             {/* Code */}
             <button className={baseBtn} onClick={() => onAction("codeblock")}>
@@ -74,7 +76,7 @@ export default function Toolbar({ onAction }) {
                 </button>
 
                 {open && (
-                    <div className="absolute right-0 mt-2 w-auto bg-white border rounded-lg shadow-lg p-3 z-50">
+                    <div className="absolute right-0 mt-2 w-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3 z-50">
                         {/* Headings */}
                         <button
                             className={baseBtn}

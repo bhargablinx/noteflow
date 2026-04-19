@@ -17,27 +17,27 @@ The goal of this project is to build a modern, developer-friendly notes app that
 
 ### Phase 1: Core Features
 
-- [ ] Create, edit, and delete notes
-- [ ] Live markdown preview
-- [ ] Save notes using localStorage
+- [x] Create, edit, and delete notes
+- [x] Live markdown preview
+- [x] Save notes using localStorage
 
 ### Phase 2: Organization & Search
 
-- [ ] Tagging system (e.g., #work, #study)
-- [ ] Search and filter functionality
-- [ ] Debounced search for performance
+- [x] Tagging system (e.g., #work, #study)
+- [x] Search and filter functionality
+- [x] Debounced search for performance
 
 ### Phase 3: User Experience
 
-- [ ] Dark / Light theme toggle
+- [x] Dark / Light theme toggle
 - [ ] Responsive UI design
-- [ ] Clean and minimal interface
+- [x] Clean and minimal interface
 
 ### Phase 4: Advanced Features
 
-- [ ] Keyboard shortcuts for faster workflow
-- [ ] Improved state management
-- [ ] Performance optimizations
+- [x] Keyboard shortcuts for faster workflow
+- [x] Improved state management
+- [x] Performance optimizations
 
 ### Phase 5 Enhancements
 

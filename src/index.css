@@ -8,6 +8,17 @@
     @apply block w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 text-sm;
 }
 
+mark {
+    background-color: #fde68a;
+    padding: 0 2px;
+    border-radius: 4px;
+}
+
+.dark mark {
+    background-color: #facc15;
+    color: black;
+}
+
 @theme {
     --font-sans: "Inter", sans-serif;
     --font-mono: "JetBrains Mono", monospace;

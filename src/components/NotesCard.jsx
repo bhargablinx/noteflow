@@ -8,10 +8,13 @@ export default function NotesCard({
     tags = [],
     lastEdited,
     onClick,
+    searchQuery,
 }) {
     const { flashNoteIndex } = useContext(NotesContext);
     const ref = useRef(null);
     const isFlashing = flashNoteIndex === index;
+    const highlightedTitle = highlightText(title || "", searchQuery);
+    const highlightedContent = highlightText(content || "", searchQuery);
 
     // Tag color variations
     const TAG_COLORS = [
@@ -44,6 +47,15 @@ export default function NotesCard({
         return TAG_COLORS[Math.abs(hash) % TAG_COLORS.length];
     }
 
+    function highlightText(text, query) {
+        if (!query) return text;
+
+        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const regex = new RegExp(`(${escaped})`, "gi");
+
+        return text.replace(regex, "<mark>$1</mark>");
+    }
+
     useEffect(() => {
         if (isFlashing && ref.current) {
             ref.current.scrollIntoView({
@@ -65,14 +77,18 @@ export default function NotesCard({
                     }`}
         >
             {/* Title */}
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-                {title}
-            </h2>
+            <h2
+                className="text-lg font-semibold text-gray-800 dark:text-gray-100"
+                dangerouslySetInnerHTML={{ __html: highlightedTitle }}
+            />
 
             {/* Description / Content Preview */}
-            <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 line-clamp-1">
-                {content}
-            </p>
+            <p
+                className="text-gray-600 dark:text-gray-400 text-sm mt-1 line-clamp-1"
+                dangerouslySetInnerHTML={{
+                    __html: highlightedContent.slice(0, 150),
+                }}
+            />
 
             {/* Tags */}
             <div className="flex gap-2 mt-3 flex-wrap">
@@ -80,9 +96,10 @@ export default function NotesCard({
                     <span
                         key={index}
                         className={`px-2 py-1 text-xs rounded-md border ${getTagColor(tag.toLowerCase().trim())} dark:opacity-90`}
-                    >
-                        {tag}
-                    </span>
+                        dangerouslySetInnerHTML={{
+                            __html: highlightText(tag, searchQuery),
+                        }}
+                    />
                 ))}
             </div>
 

@@ -67,6 +67,7 @@ export default function Layout1({ onSelectNote }) {
                         tags={note.tags}
                         lastEdited={getTimeAgo(note.lastEdited)}
                         onClick={() => onSelectNote(note)}
+                        searchQuery={searchQuery}
                     />
                 ))}
                 {filteredNotes.length === 0 && (

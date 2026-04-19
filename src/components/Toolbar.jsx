@@ -49,22 +49,22 @@ export default function Toolbar({ onAction }) {
 
             {/* Code */}
             <button className={baseBtn} onClick={() => onAction("codeblock")}>
-                <i class="fa-solid fa-code"></i>
+                <i className="fa-solid fa-code"></i>
             </button>
 
             {/* Quote */}
             <button className={baseBtn} onClick={() => onAction("quote")}>
-                <i class="fa-solid fa-quote-left"></i>
+                <i className="fa-solid fa-quote-left"></i>
             </button>
 
             {/* Undo */}
             <button className={baseBtn} onClick={() => onAction("undo")}>
-                <i class="fa-solid fa-rotate-left"></i>
+                <i className="fa-solid fa-rotate-left"></i>
             </button>
 
             {/* Redo */}
             <button className={baseBtn} onClick={() => onAction("redo")}>
-                <i class="fa-solid fa-rotate-right"></i>
+                <i className="fa-solid fa-rotate-right"></i>
             </button>
 
             {/* MORE MENU */}
@@ -116,7 +116,7 @@ export default function Toolbar({ onAction }) {
                             className={baseBtn}
                             onClick={() => onAction("strike")}
                         >
-                            <i class="fa-solid fa-strikethrough"></i>
+                            <i className="fa-solid fa-strikethrough"></i>
                         </button>
                     </div>
                 )}

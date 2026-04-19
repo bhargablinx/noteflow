@@ -9,6 +9,8 @@ export default function NotesCard({
     lastEdited,
     onClick,
     searchQuery,
+    highlightText,
+    getSnippet,
 }) {
     const { flashNoteIndex } = useContext(NotesContext);
     const ref = useRef(null);
@@ -47,15 +49,6 @@ export default function NotesCard({
         return TAG_COLORS[Math.abs(hash) % TAG_COLORS.length];
     }
 
-    function highlightText(text, query) {
-        if (!query) return text;
-
-        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const regex = new RegExp(`(${escaped})`, "gi");
-
-        return text.replace(regex, "<mark>$1</mark>");
-    }
-
     function adjustToWordBoundary(text, index, direction) {
         if (direction === "start") {
             while (index > 0 && text[index] !== " ") index--;
@@ -63,37 +56,6 @@ export default function NotesCard({
             while (index < text.length && text[index] !== " ") index++;
         }
         return index;
-    }
-
-    function getSnippet(text, query) {
-        if (!text) return "";
-        if (!query) return text.slice(0, 150);
-
-        const lowerText = text.toLowerCase();
-        const words = query.toLowerCase().split(" ").filter(Boolean);
-
-        const index = words
-            .map((word) => lowerText.indexOf(word))
-            .find((i) => i !== -1);
-
-        if (index === undefined) return text.slice(0, 150);
-
-        const SNIPPET_BEFORE = 40;
-        const SNIPPET_AFTER = 100;
-
-        let start = Math.max(0, index - SNIPPET_BEFORE);
-        let end = Math.min(text.length, index + SNIPPET_AFTER);
-
-        // Adjust to word boundaries
-        while (start > 0 && text[start] !== " ") start--;
-        while (end < text.length && text[end] !== " ") end++;
-
-        let snippet = text.slice(start, end);
-
-        if (start > 0) snippet = "..." + snippet;
-        if (end < text.length) snippet += "...";
-
-        return snippet;
     }
 
     useEffect(() => {

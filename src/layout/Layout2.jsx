@@ -18,6 +18,7 @@ export default function Layout2({ selectedNote, onBack }) {
     const [currentIndex, setCurrentIndex] = useState(-1);
     const historyDebounceRef = useRef(null);
     const [isMoreOptOpen, setIsMoreOptOpen] = useState(false);
+    const [showPreview, setShowPreview] = useState(false); // NEW
 
     useEffect(() => {
         if (!selectedNote?.id) return;
@@ -359,26 +360,45 @@ export default function Layout2({ selectedNote, onBack }) {
     return (
         <div className="flex flex-col h-full bg-white dark:bg-gray-950">
             {/* Top Bar */}
-            <div className="flex items-center justify-between px-6 py-3 border-b dark:border-gray-800">
+            <div
+                className="
+      flex items-center justify-between 
+      px-3 sm:px-4 md:px-6 
+      py-2.5 sm:py-3 
+      border-b dark:border-gray-800
+    "
+            >
                 <button
                     onClick={onBack}
-                    className="text-sm text-gray-500 hover:text-gray-800 dark:hover:text-white"
+                    className="text-xs sm:text-sm text-gray-500 hover:text-gray-800 dark:hover:text-white"
                 >
                     ← Back
                 </button>
 
-                <span className="text-sm text-gray-400">
+                <span className="text-xs sm:text-sm text-gray-400">
                     {saveStatus === "saving" && "Saving..."}
                     {saveStatus === "saved" && "Saved ✓"}
                 </span>
 
-                <div className="flex items-center gap-7">
+                <div className="flex items-center gap-2 sm:gap-4 md:gap-6">
+                    {/* NEW: Preview toggle button (mobile only) */}
+                    <button
+                        onClick={() => setShowPreview((prev) => !prev)}
+                        className="md:hidden text-xs sm:text-sm px-2 py-1 rounded bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-200"
+                    >
+                        {showPreview ? "Edit" : "Preview"}
+                    </button>
+
                     <button
                         onClick={handleSave}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-lg text-sm"
+                        className="bg-blue-600 hover:bg-blue-700 text-white 
+        px-2 sm:px-3 md:px-4 
+        py-1 sm:py-1.5 
+        rounded-lg text-xs sm:text-sm"
                     >
                         Save
                     </button>
+
                     <div className="relative">
                         <button
                             onClick={() => setIsMoreOptOpen((prev) => !prev)}
@@ -389,16 +409,15 @@ export default function Layout2({ selectedNote, onBack }) {
 
                         {isMoreOptOpen && (
                             <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 py-1">
-                                {/* Download */}
                                 <button
                                     onClick={handleDownloadRaw}
                                     className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                                 >
                                     <i className="fa-solid fa-download"></i>
                                     Download{" "}
-                                    <div className="text-gray-500 font-bold">
+                                    <span className="text-gray-500 font-bold">
                                         (raw)
-                                    </div>
+                                    </span>
                                 </button>
 
                                 <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -409,7 +428,6 @@ export default function Layout2({ selectedNote, onBack }) {
                                     </span>
                                 </button>
 
-                                {/* Delete */}
                                 <button
                                     onClick={handleDelete}
                                     className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30"
@@ -424,29 +442,59 @@ export default function Layout2({ selectedNote, onBack }) {
             </div>
 
             {/* Editor + Preview */}
-            <div className="flex flex-1 overflow-hidden">
+            <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
                 {/* LEFT SIDE */}
                 <div className="flex flex-col flex-1 min-w-0">
-                    <div className="px-6 sticky top-0 z-10 bg-white dark:bg-gray-950">
+                    <div className="px-3 sm:px-4 md:px-6 sticky top-0 z-10 bg-white dark:bg-gray-950">
                         <Toolbar onAction={handleToolbarAction} />
                     </div>
 
-                    <Editor
-                        title={title}
-                        setTitle={setTitle}
-                        tags={tags}
-                        setTags={setTags}
-                        content={content}
-                        setContent={updateContent}
-                        textareaRef={textareaRef}
-                    />
+                    {/* NEW: Conditional render for mobile */}
+                    <div className="flex-1 min-h-0">
+                        <div className="md:hidden h-full">
+                            {showPreview ? (
+                                <div className="h-full overflow-auto">
+                                    <Preview
+                                        title={title}
+                                        tags={tags}
+                                        content={content}
+                                    />
+                                </div>
+                            ) : (
+                                <Editor
+                                    title={title}
+                                    setTitle={setTitle}
+                                    tags={tags}
+                                    setTags={setTags}
+                                    content={content}
+                                    setContent={updateContent}
+                                    textareaRef={textareaRef}
+                                />
+                            )}
+                        </div>
+
+                        {/* Desktop always shows editor */}
+                        <div className="hidden md:block h-full">
+                            <Editor
+                                title={title}
+                                setTitle={setTitle}
+                                tags={tags}
+                                setTags={setTags}
+                                content={content}
+                                setContent={updateContent}
+                                textareaRef={textareaRef}
+                            />
+                        </div>
+                    </div>
                 </div>
 
                 {/* Divider */}
-                <div className="w-px bg-gray-200 dark:bg-gray-800" />
+                <div className="hidden md:block w-px bg-gray-200 dark:bg-gray-800" />
 
-                {/* RIGHT SIDE */}
-                <Preview title={title} tags={tags} content={content} />
+                {/* RIGHT SIDE (desktop only) */}
+                <div className="hidden md:block flex-1 min-w-0 overflow-auto">
+                    <Preview title={title} tags={tags} content={content} />
+                </div>
             </div>
         </div>
     );

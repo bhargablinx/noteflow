@@ -35,21 +35,28 @@ export default function Header() {
     return (
         <div>
             <header
-                className="flex items-center justify-between px-6 py-4 
-                bg-white dark:bg-gray-900 
-                shadow-sm dark:shadow-gray-800/30 
-                border-b border-gray-200 dark:border-gray-800 
-                transition-colors duration-300"
+                className="flex items-center justify-between 
+    px-3 py-3 sm:px-4 md:px-6 md:py-4
+    bg-white dark:bg-gray-900 
+    shadow-sm dark:shadow-gray-800/30 
+    border-b border-gray-200 dark:border-gray-800 
+    transition-colors duration-300"
             >
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100">
                     Noteflow
                 </h1>
-                <div className="flex items-center gap-[30px]">
+
+                <div className="flex items-center gap-2 sm:gap-3 md:gap-6">
                     <button
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
+                        className="bg-blue-600 hover:bg-blue-700 text-white 
+        px-2 py-1 text-sm 
+        sm:px-3 sm:py-1.5 sm:text-sm 
+        md:px-4 md:py-2 md:text-base 
+        rounded-lg transition-colors duration-200 whitespace-nowrap"
                         onClick={handleCreateNote}
                     >
-                        + Create Note
+                        + Create
+                        <span className="hidden sm:inline"> Note</span>
                     </button>
 
                     <i
@@ -57,7 +64,7 @@ export default function Header() {
                             theme === "light"
                                 ? "fa-sun text-yellow-400"
                                 : "fa-moon text-gray-800"
-                        } text-2xl cursor-pointer`}
+                        } text-lg sm:text-xl md:text-2xl cursor-pointer`}
                         onClick={toggleTheme}
                     ></i>
                 </div>

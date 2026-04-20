@@ -71,22 +71,26 @@ export default function NotesCard({
         <div
             ref={ref}
             onClick={onClick}
-            className={`p-4 rounded-xl transition-all duration-500 cursor-pointer border shadow-sm hover:shadow-md dark:shadow-gray-800/30
-                    ${
-                        isFlashing
-                            ? "bg-blue-100 dark:bg-blue-900 border-blue-400 scale-[1.02]"
-                            : "bg-white dark:bg-gray-900 border-transparent dark:border-gray-800"
-                    }`}
+            className={`p-3 sm:p-4 rounded-lg sm:rounded-xl 
+    transition-all duration-300 cursor-pointer 
+    border shadow-sm hover:shadow-md dark:shadow-gray-800/30
+    ${
+        isFlashing
+            ? "bg-blue-100 dark:bg-blue-900 border-blue-400 scale-[1.01] sm:scale-[1.02]"
+            : "bg-white dark:bg-gray-900 border-transparent dark:border-gray-800"
+    }`}
         >
             {/* Title */}
             <h2
-                className="text-lg font-semibold text-gray-800 dark:text-gray-100"
+                className="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-100 line-clamp-1"
                 dangerouslySetInnerHTML={{ __html: highlightedTitle }}
             />
 
             {/* Description / Content Preview */}
             <p
-                className="text-gray-600 dark:text-gray-400 text-sm mt-1 line-clamp-2"
+                className="text-gray-600 dark:text-gray-400 
+      text-xs sm:text-sm 
+      mt-1 line-clamp-2"
                 dangerouslySetInnerHTML={{
                     __html: highlightText(
                         getSnippet(content, searchQuery),
@@ -96,11 +100,13 @@ export default function NotesCard({
             />
 
             {/* Tags */}
-            <div className="flex gap-2 mt-3 flex-wrap">
+            <div className="flex gap-1.5 sm:gap-2 mt-2 sm:mt-3 flex-wrap">
                 {tags.map((tag, index) => (
                     <span
                         key={index}
-                        className={`px-2 py-1 text-xs rounded-md border ${getTagColor(tag.toLowerCase().trim())} dark:opacity-90`}
+                        className={`px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs rounded-md border ${getTagColor(
+                            tag.toLowerCase().trim(),
+                        )} dark:opacity-90`}
                         dangerouslySetInnerHTML={{
                             __html: highlightText(tag, searchQuery),
                         }}
@@ -109,7 +115,7 @@ export default function NotesCard({
             </div>
 
             {/* Footer */}
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">
+            <p className="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 mt-2 sm:mt-3">
                 Last edited: {lastEdited}
             </p>
         </div>

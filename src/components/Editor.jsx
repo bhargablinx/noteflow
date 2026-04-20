@@ -243,19 +243,18 @@ export default function Editor({
     }, [title, content, tags]);
 
     return (
-        <div className="flex-1 min-w-0 px-6 py-4 flex flex-col gap-4">
+        <div className="flex-1 min-w-0 px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex flex-col gap-3 sm:gap-4 min-h-0 h-full">
             <input
                 type="text"
                 placeholder="Untitled note..."
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="
-                    text-3xl font-bold tracking-tight
-                    bg-transparent outline-none
-
-                    text-gray-900 dark:text-gray-100
-
-                    placeholder:text-gray-400
+      text-xl sm:text-2xl md:text-3xl font-bold tracking-tight
+      bg-transparent outline-none
+      text-gray-900 dark:text-gray-100
+      placeholder:text-gray-400
+      shrink-0
     "
             />
 
@@ -265,40 +264,43 @@ export default function Editor({
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
                 className="
-                    text-sm
-                    bg-gray-100 dark:bg-gray-800
-                    px-3 py-1.5 rounded-lg
-
-                    text-gray-600 dark:text-gray-300
-                    placeholder:text-gray-400
-
-                    outline-none focus:ring-1 focus:ring-blue-300
+      text-xs sm:text-sm
+      bg-gray-100 dark:bg-gray-800
+      px-2.5 sm:px-3 py-1.5 rounded-lg
+      text-gray-600 dark:text-gray-300
+      placeholder:text-gray-400
+      outline-none focus:ring-1 focus:ring-blue-300
+      shrink-0
     "
             />
 
-            <textarea
-                ref={textareaRef}
-                placeholder="Start writing in markdown..."
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                onKeyDown={(e) => shortcutFunctionality(e)}
-                className="
-                    flex-1 resize-none outline-none
+            {/* FIX: this wrapper grows properly */}
+            <div className="flex-1 min-h-0 flex">
+                <textarea
+                    ref={textareaRef}
+                    placeholder="Start writing in markdown..."
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    onKeyDown={(e) => shortcutFunctionality(e)}
+                    className="
+        flex-1 w-full h-full resize-none outline-none
 
-                    text-[15px] leading-relaxed
-                    font-mono
+        text-sm sm:text-[15px] leading-relaxed
+        font-mono
 
-                    bg-white dark:bg-gray-900
-                    text-gray-800 dark:text-gray-200
+        bg-white dark:bg-gray-900
+        text-gray-800 dark:text-gray-200
 
-                    p-4 rounded-xl
-                    border border-gray-200 dark:border-gray-700
+        p-3 sm:p-4 rounded-lg sm:rounded-xl
+        border border-gray-200 dark:border-gray-700
 
-                    focus:ring-1 focus:ring-blue-300
-                    focus:border-blue-300
+        focus:ring-1 focus:ring-blue-300
+        focus:border-blue-300
 
-                    shadow-sm"
-            />
+        shadow-sm
+      "
+                />
+            </div>
         </div>
     );
 }

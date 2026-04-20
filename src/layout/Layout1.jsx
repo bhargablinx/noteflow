@@ -135,7 +135,16 @@ export default function Layout1({ onSelectNote }) {
     }, [searchQuery]);
 
     return (
-        <main className="flex-1 p-6 space-y-4 bg-gray-50 dark:bg-gray-950 h-full overflow-y-auto transition-colors duration-300">
+        <main
+            className="
+    flex-1 
+    p-3 sm:p-4 md:p-6 
+    space-y-3 sm:space-y-4 
+    bg-gray-50 dark:bg-gray-950 
+    h-full overflow-y-auto 
+    transition-colors duration-300
+  "
+        >
             {/* Search */}
             <Searchbar
                 searchQuery={searchQuery}
@@ -143,8 +152,7 @@ export default function Layout1({ onSelectNote }) {
             />
 
             {/* Notes */}
-            <div className="space-y-4">
-                {/* Card */}
+            <div className="space-y-3 sm:space-y-4">
                 {filteredNotes.map((note, index) => (
                     <NotesCard
                         key={note.id}
@@ -159,18 +167,37 @@ export default function Layout1({ onSelectNote }) {
                         getSnippet={getSnippet}
                     />
                 ))}
+
                 {filteredNotes.length === 0 && (
-                    <p className="text-sm text-gray-500">No notes found</p>
+                    <p className="text-sm text-gray-500 px-1">No notes found</p>
                 )}
             </div>
+
+            {/* Command Palette */}
             {isPaletteOpen && (
                 <div
-                    className="fixed inset-0 cursor-pointer bg-black/40 backdrop-blur-sm flex items-start justify-center pt-24 z-50"
-                    onClick={() => setIsPaletteOpen(false)} // 👈 OUTSIDE click closes
+                    className="
+        fixed inset-0 
+        cursor-pointer 
+        bg-black/40 backdrop-blur-sm 
+        flex items-start justify-center 
+        pt-16 sm:pt-20 md:pt-24
+        px-3 sm:px-4
+        z-50
+      "
+                    onClick={() => setIsPaletteOpen(false)}
                 >
                     <div
-                        className="w-full cursor-default max-w-xl bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-4"
-                        onClick={(e) => e.stopPropagation()} // 👈 INSIDE click stays open
+                        className="
+          w-full 
+          max-w-lg md:max-w-xl
+          cursor-default 
+          bg-white dark:bg-gray-900 
+          rounded-xl sm:rounded-2xl 
+          shadow-xl 
+          p-3 sm:p-4
+        "
+                        onClick={(e) => e.stopPropagation()}
                     >
                         {/* Input */}
                         <input
@@ -178,11 +205,21 @@ export default function Layout1({ onSelectNote }) {
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search notes..."
-                            className="w-full px-4 py-3 rounded-lg border dark:bg-gray-800 dark:border-gray-700 outline-none"
+                            className="
+            w-full 
+            px-3 sm:px-4 
+            py-2.5 sm:py-3 
+            text-sm sm:text-base
+            rounded-lg 
+            border 
+            dark:bg-gray-800 
+            dark:border-gray-700 
+            outline-none
+          "
                         />
 
                         {/* Results */}
-                        <div className="mt-4 max-h-80 overflow-y-auto">
+                        <div className="mt-3 sm:mt-4 max-h-64 sm:max-h-80 overflow-y-auto">
                             {filteredNotes.length === 0 && (
                                 <p className="text-sm text-gray-500 p-2">
                                     No results found
@@ -196,14 +233,14 @@ export default function Layout1({ onSelectNote }) {
                                         onSelectNote(note);
                                         setIsPaletteOpen(false);
                                     }}
-                                    className={`p-3 rounded-lg cursor-pointer transition ${
+                                    className={`p-2.5 sm:p-3 rounded-lg cursor-pointer transition ${
                                         index === selectedIndex
                                             ? "bg-blue-100 dark:bg-blue-900"
                                             : "hover:bg-gray-100 dark:hover:bg-gray-800"
                                     }`}
                                 >
                                     <p
-                                        className="font-medium text-gray-800 dark:text-gray-200"
+                                        className="font-medium text-sm sm:text-base text-gray-800 dark:text-gray-200"
                                         dangerouslySetInnerHTML={{
                                             __html: highlightText(
                                                 note.title || "Untitled",

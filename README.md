@@ -1,7 +1,10 @@
 # NoteFlow
 
 <p align="center">
+  <br/>
+  <br/>
   <img src="./logo.png" alt="NoteFlow Logo" width="120" />
+  <br/>
 </p>
 
 <p align="center">
@@ -27,7 +30,7 @@ The project focuses on:
 
 ## Features
 
-### 📝 Markdown Editor
+### Markdown Editor
 
 - Live markdown editing
 - Real-time preview rendering
@@ -35,26 +38,26 @@ The project focuses on:
 - Word wrap support
 - Clean distraction-free interface
 
-### 💾 Note Management
+### Note Management
 
 - Create, edit, and delete notes
 - Auto-save functionality
 - Notes stored locally for persistence
 - Recently updated notes shown on top
 
-### 🎨 User Experience
+### User Experience
 
 - Responsive layout for desktop and mobile
 - Dark mode support
 - Smooth UI interactions
 - Split editor and preview layout
 
-### 📄 Export Support
+### Export Support
 
 - Export notes as `.md` file
 - Export notes as pdf (coming soon)
 
-### ⌨️ Productivity Features
+### Productivity Features
 
 - Keyboard-friendly workflow
 - Fast note searching
@@ -84,7 +87,7 @@ The project focuses on:
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Technology      | Purpose                  |
 | --------------- | ------------------------ |
@@ -131,7 +134,7 @@ http://localhost:5173
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome!
 
@@ -144,9 +147,3 @@ If you'd like to contribute:
 5. Open a Pull Request
 
 ---
-
-## Support
-
-If you like this project, consider giving it a ⭐ on GitHub.
-
-It helps support the project and motivates future development.

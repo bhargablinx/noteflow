@@ -71,14 +71,13 @@ export default function NotesCard({
         <div
             ref={ref}
             onClick={onClick}
-            className={`p-3 sm:p-4 rounded-lg sm:rounded-xl 
-    transition-all duration-300 cursor-pointer 
-    border shadow-sm hover:shadow-md dark:shadow-gray-800/30
-    ${
-        isFlashing
-            ? "bg-blue-100 dark:bg-blue-900 border-blue-400 scale-[1.01] sm:scale-[1.02]"
-            : "bg-white dark:bg-gray-900 border-transparent dark:border-gray-800"
-    }`}
+            className={`p-3 sm:p-4 rounded-lg sm:rounded-xl transition-all duration-300 cursor-pointer 
+                            border shadow-sm hover:shadow-md dark:shadow-gray-800/30
+                        ${
+                            isFlashing
+                                ? "bg-blue-100 dark:bg-blue-900 border-blue-400 scale-[1.01] sm:scale-[1.02]"
+                                : "bg-white dark:bg-gray-900 border-transparent dark:border-gray-800"
+                        }`}
         >
             {/* Title */}
             <h2
@@ -88,9 +87,7 @@ export default function NotesCard({
 
             {/* Description / Content Preview */}
             <p
-                className="text-gray-600 dark:text-gray-400 
-      text-xs sm:text-sm 
-      mt-1 line-clamp-2"
+                className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mt-1 line-clamp-2"
                 dangerouslySetInnerHTML={{
                     __html: highlightText(
                         getSnippet(content, searchQuery),

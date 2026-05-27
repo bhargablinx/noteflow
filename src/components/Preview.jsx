@@ -8,11 +8,14 @@ import remarkGfm from "remark-gfm";
 import { ThemeContext } from "../context/ThemeContext";
 import { useContext } from "react";
 
-export default function Preview({ title, tags, content }) {
+export default function Preview({ title, tags, content, printRef }) {
     const { theme } = useContext(ThemeContext);
 
     return (
-        <div className="flex-1 min-w-0 px-3 sm:px-4 md:px-6 py-3 sm:py-4 overflow-y-auto min-h-0">
+        <div
+            ref={printRef}
+            className="flex-1 min-w-0 px-3 sm:px-4 md:px-6 py-3 sm:py-4 overflow-y-auto min-h-0"
+        >
             <div
                 className="
       prose dark:prose-invert max-w-none

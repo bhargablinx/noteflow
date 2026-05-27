@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { NotesContext } from "./context/NotesContext";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
@@ -19,7 +19,7 @@ function App() {
             {/* Body */}
             <div className="flex flex-1 overflow-hidden">
                 {/* Sidebar */}
-                <Sidebar className="flex-1" />
+                <Sidebar />
 
                 {/* Main Content */}
                 <div className="flex-1">

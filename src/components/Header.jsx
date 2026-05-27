@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { NotesContext } from "../context/NotesContext";
 
@@ -19,17 +19,11 @@ export default function Header() {
         setSelectedNoteId(newNote.id);
     };
 
-    const handleSaveNote = (note) => {
-        setNotes((prev) => [note, ...prev]);
-        console.log(notes);
-    };
-
     const toggleTheme = () => {
         theme == "light" ? setTheme("dark") : setTheme("light");
         const html = document.querySelector("html");
         html.classList.remove("light", "dark");
         html.classList.add(theme);
-        console.log(theme);
     };
 
     return (
@@ -59,14 +53,14 @@ export default function Header() {
                         <span className="hidden sm:inline"> Note</span>
                     </button>
 
-                    <i
+                    <button
                         className={`fa-solid ${
                             theme === "light"
                                 ? "fa-sun text-yellow-400"
                                 : "fa-moon text-gray-800"
                         } text-lg sm:text-xl md:text-2xl cursor-pointer`}
                         onClick={toggleTheme}
-                    ></i>
+                    ></button>
                 </div>
             </header>
         </div>

@@ -3,7 +3,7 @@ import { NotesContext } from "./context/NotesContext";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import HomeLayout from "./layout/HomeLayout";
-import Layout2 from "./layout/Layout2";
+import SelectedNoteLayout from "./layout/SelectedNoteLayout";
 
 function App() {
     const { notes, selectedNoteId, setSelectedNoteId } =
@@ -24,7 +24,7 @@ function App() {
                 {/* Main Content */}
                 <div className="flex-1">
                     {selectedNote ? (
-                        <Layout2
+                        <SelectedNoteLayout
                             selectedNote={selectedNote}
                             onBack={() => setSelectedNoteId(null)}
                         />

@@ -5,7 +5,7 @@ import { NotesContext } from "../context/NotesContext";
 import Toolbar from "../components/Toolbar";
 import { toggleWrapUtil } from "../components/Editor";
 
-export default function Layout2({ selectedNote, onBack }) {
+export default function SelectedNoteLayout({ selectedNote, onBack }) {
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState("");
     const [content, setContent] = useState("");

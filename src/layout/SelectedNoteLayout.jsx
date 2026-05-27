@@ -1,24 +1,28 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Editor from "../components/Editor";
 import Preview from "../components/Preview";
-import { NotesContext } from "../context/NotesContext";
 import Toolbar from "../components/Toolbar";
-import { toggleWrapUtil } from "../components/Editor";
+import { NotesContext } from "../context/NotesContext";
+import { useAutosave } from "../hooks/useAutosave";
+import { useEditorHistory } from "../hooks/useEditorHistory";
+import { toolbarActions } from "../utils/toolbarActions";
 
 export default function SelectedNoteLayout({ selectedNote, onBack }) {
+    const { setNotes, deleteNotes } = useContext(NotesContext);
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState("");
     const [content, setContent] = useState("");
-    const { notes, setNotes, deleteNotes } = useContext(NotesContext);
-    const debounceRef = useRef(null);
-    const isFirstLoad = useRef(true);
-    const [saveStatus, setSaveStatus] = useState("idle");
-    const textareaRef = useRef();
-    const [history, setHistory] = useState([]);
-    const [currentIndex, setCurrentIndex] = useState(-1);
-    const historyDebounceRef = useRef(null);
     const [isMoreOptOpen, setIsMoreOptOpen] = useState(false);
-    const [showPreview, setShowPreview] = useState(false); // NEW
+    const [showPreview, setShowPreview] = useState(false);
+    const textareaRef = useRef();
+
+    const {
+        scheduleHistorySave,
+        flushHistoryNow,
+        handleUndo,
+        handleRedo,
+        resetHistory,
+    } = useEditorHistory();
 
     useEffect(() => {
         if (!selectedNote?.id) return;
@@ -26,145 +30,9 @@ export default function SelectedNoteLayout({ selectedNote, onBack }) {
         setTitle(selectedNote.title || "");
         setTags((selectedNote.tags || []).join(", "));
         setContent(selectedNote.content || "");
-    }, [selectedNote?.id]);
 
-    useEffect(() => {
-        if (isFirstLoad.current) {
-            isFirstLoad.current = false;
-            return;
-        }
-
-        if (!selectedNote?.id) return;
-
-        // show saving immediately when user types
-        setSaveStatus("saving");
-
-        if (debounceRef.current) {
-            clearTimeout(debounceRef.current);
-        }
-
-        debounceRef.current = setTimeout(() => {
-            handleSave();
-            setSaveStatus("saved");
-
-            setTimeout(() => setSaveStatus("idle"), 1500);
-        }, 500);
-
-        return () => clearTimeout(debounceRef.current);
-    }, [title, content, tags]);
-
-    useEffect(() => {
-        if (!selectedNote?.id) return;
-
-        const initial = selectedNote.content || "";
-
-        setHistory([initial]);
-        setCurrentIndex(0);
+        resetHistory(selectedNote.content || "");
     }, [selectedNote]);
-
-    const handleUndo = () => {
-        if (currentIndex > 0) {
-            const newIndex = currentIndex - 1;
-            setCurrentIndex(newIndex);
-            setContent(history[newIndex]);
-        }
-    };
-
-    const handleRedo = () => {
-        if (currentIndex < history.length - 1) {
-            const newIndex = currentIndex + 1;
-            setCurrentIndex(newIndex);
-            setContent(history[newIndex]);
-        }
-    };
-
-    const scheduleHistorySave = (newContent) => {
-        if (historyDebounceRef.current) {
-            clearTimeout(historyDebounceRef.current);
-        }
-
-        historyDebounceRef.current = setTimeout(() => {
-            setHistory((prevHistory) => {
-                const trimmed = prevHistory.slice(0, currentIndex + 1);
-
-                // prevent duplicate entries
-                if (trimmed[trimmed.length - 1] === newContent) {
-                    return trimmed;
-                }
-
-                const updated = [...trimmed, newContent];
-
-                if (updated.length > 50) updated.shift();
-
-                setCurrentIndex(updated.length - 1);
-
-                return updated;
-            });
-        }, 600);
-    };
-
-    const updateContent = (value) => {
-        const lastChar = value.slice(-1);
-
-        setContent(value);
-
-        // Save immediately on word boundary
-        if (lastChar === " " || lastChar === "." || lastChar === "\n") {
-            flushHistoryNow(value);
-            return;
-        }
-
-        // otherwise debounce
-        scheduleHistorySave(value);
-    };
-
-    const flushHistoryNow = (newContent) => {
-        if (historyDebounceRef.current) {
-            clearTimeout(historyDebounceRef.current);
-        }
-
-        setHistory((prevHistory) => {
-            const trimmed = prevHistory.slice(0, currentIndex + 1);
-
-            if (trimmed[trimmed.length - 1] === newContent) {
-                return trimmed;
-            }
-
-            const updated = [...trimmed, newContent];
-
-            if (updated.length > 50) updated.shift();
-
-            setCurrentIndex(updated.length - 1);
-
-            return updated;
-        });
-    };
-
-    const saveToHistory = (newContent) => {
-        if (historyDebounceRef.current) {
-            clearTimeout(historyDebounceRef.current);
-        }
-
-        historyDebounceRef.current = setTimeout(() => {
-            setHistory((prevHistory) => {
-                const trimmed = prevHistory.slice(0, currentIndex + 1);
-
-                // Avoid duplicate entries
-                if (trimmed[trimmed.length - 1] === newContent) {
-                    return trimmed;
-                }
-
-                const updated = [...trimmed, newContent];
-
-                // limit history
-                if (updated.length > 50) updated.shift();
-
-                setCurrentIndex(updated.length - 1);
-
-                return updated;
-            });
-        }, 600); // (500–800ms feels natural)
-    };
 
     const handleSave = () => {
         setNotes((prevNotes) => {
@@ -177,26 +45,14 @@ export default function SelectedNoteLayout({ selectedNote, onBack }) {
                 (note) => note.id === selectedNote.id,
             );
 
-            // skip if nothing changed
-            if (
-                existing &&
-                existing.title === title &&
-                existing.content === content &&
-                JSON.stringify(existing.tags) === JSON.stringify(newTags)
-            ) {
-                return prevNotes;
-            }
-
             const updatedNote = {
                 ...existing,
-                id: selectedNote.id,
                 title,
                 content,
                 tags: newTags,
                 lastEdited: new Date().toISOString(),
             };
 
-            // remove old + add to top
             const filtered = prevNotes.filter(
                 (note) => note.id !== selectedNote.id,
             );
@@ -205,156 +61,30 @@ export default function SelectedNoteLayout({ selectedNote, onBack }) {
         });
     };
 
-    const handleToolbarAction = (type) => {
-        const textarea = textareaRef.current;
-        if (!textarea) return;
+    const { saveStatus } = useAutosave(handleSave, [title, content, tags], 500);
 
-        switch (type) {
-            case "bold":
-                flushHistoryNow(content);
-                toggleWrapUtil(textarea, updateContent, "**");
-                break;
+    const updateContent = (value) => {
+        const lastChar = value.slice(-1);
+        setContent(value);
 
-            case "italic":
-                flushHistoryNow(content);
-                toggleWrapUtil(textarea, updateContent, "*");
-                break;
-
-            case "underline":
-                toggleWrapUtil(textarea, updateContent, "<u>", "</u>");
-                break;
-
-            case "highlight":
-                toggleWrapUtil(textarea, updateContent, "==");
-                break;
-
-            case "link":
-                toggleWrapUtil(textarea, updateContent, "[", "](url)");
-                break;
-
-            case "image":
-                toggleWrapUtil(textarea, updateContent, "![alt]", "(url)");
-                break;
-
-            case "h1":
-                textarea.setRangeText(
-                    "\n# ",
-                    textarea.selectionStart,
-                    textarea.selectionEnd,
-                    "end",
-                );
-                updateContent(textarea.value);
-                break;
-
-            case "h2":
-                textarea.setRangeText(
-                    "\n## ",
-                    textarea.selectionStart,
-                    textarea.selectionEnd,
-                    "end",
-                );
-                updateContent(textarea.value);
-                break;
-
-            case "h3":
-                textarea.setRangeText(
-                    "\n### ",
-                    textarea.selectionStart,
-                    textarea.selectionEnd,
-                    "end",
-                );
-                updateContent(textarea.value);
-                break;
-
-            case "ul":
-                textarea.setRangeText(
-                    "\n- ",
-                    textarea.selectionStart,
-                    textarea.selectionEnd,
-                    "end",
-                );
-                updateContent(textarea.value);
-                break;
-
-            case "ol":
-                textarea.setRangeText(
-                    "\n1. ",
-                    textarea.selectionStart,
-                    textarea.selectionEnd,
-                    "end",
-                );
-                updateContent(textarea.value);
-                break;
-
-            case "checkbox":
-                textarea.setRangeText(
-                    "\n- [ ] ",
-                    textarea.selectionStart,
-                    textarea.selectionEnd,
-                    "end",
-                );
-                updateContent(textarea.value);
-                break;
-
-            case "codeblock":
-                toggleWrapUtil(textarea, updateContent, "\n```\n", "\n```");
-                break;
-
-            case "quote":
-                textarea.setRangeText(
-                    "> ",
-                    textarea.selectionStart,
-                    textarea.selectionEnd,
-                    "end",
-                );
-                updateContent(textarea.value);
-                break;
-
-            case "divider":
-                textarea.setRangeText(
-                    "--- \n",
-                    textarea.selectionStart,
-                    textarea.selectionEnd,
-                    "end",
-                );
-                updateContent(textarea.value);
-                break;
-
-            case "strike":
-                toggleWrapUtil(textarea, updateContent, "~~", "~~");
-                break;
-
-            case "undo":
-                handleUndo();
-                break;
-
-            case "redo":
-                handleRedo();
-                break;
-
-            default:
-                break;
+        if (lastChar === " " || lastChar === "." || lastChar === "\n") {
+            flushHistoryNow(value);
+            return;
         }
 
-        textarea.focus(); // important
+        scheduleHistorySave(value);
     };
 
-    const handleDelete = () => {
-        const confirmDelete = window.confirm("Delete this note?");
-        if (!confirmDelete) return;
-        deleteNotes(selectedNote);
-    };
-
-    const handleDownloadRaw = () => {
-        const blob = new Blob([content], { type: "text/plain" });
-        const url = URL.createObjectURL(blob);
-
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${title || "note"}.md`;
-        a.click();
-
-        URL.revokeObjectURL(url);
+    const handleToolbarAction = (type) => {
+        toolbarActions({
+            type,
+            textarea: textareaRef.current,
+            content,
+            updateContent,
+            flushHistoryNow,
+            handleUndo: () => handleUndo(setContent),
+            handleRedo: () => handleRedo(setContent),
+        });
     };
 
     return (

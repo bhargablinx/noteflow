@@ -1,94 +1,39 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import NotesCard from "../components/NotesCard";
 import Searchbar from "../components/Searchbar";
+import CommandPalette from "../components/CommandPalette";
 import { NotesContext } from "../context/NotesContext";
 import { getTimeAgo } from "../utils/formatDate";
+import { useCommandPalette } from "../hooks/useCommandPalette";
 import { highlightText } from "../utils/highlightText";
 import { getSnippet } from "../utils/getSnippet";
 
 export default function HomeLayout({ onSelectNote }) {
     const { notes } = useContext(NotesContext);
-    const [tick, setTick] = useState(0);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [isPaletteOpen, setIsPaletteOpen] = useState(false);
-    const [selectedIndex, setSelectedIndex] = useState(0);
 
-    const filteredNotes = notes.filter((note) => {
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const filteredNotes = useMemo(() => {
         const q = searchQuery.toLowerCase();
 
-        return (
-            (note.title || "").toLowerCase().includes(q) ||
-            (note.content || "").toLowerCase().includes(q) ||
-            (note.tags || []).some((tag) => tag.toLowerCase().includes(q))
-        );
-    });
+        return notes.filter((note) => {
+            return (
+                (note.title || "").toLowerCase().includes(q) ||
+                (note.content || "").toLowerCase().includes(q) ||
+                (note.tags || []).some((tag) => tag.toLowerCase().includes(q))
+            );
+        });
+    }, [notes, searchQuery]);
 
-    // Auto-update every minute
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setTick((prev) => prev + 1);
-        }, 60000);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    // Handle Keydown for navigation of notes in open pallet mode
-    useEffect(() => {
-        function handleKeyDown(e) {
-            // Open palette
-            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-                e.preventDefault();
-                setIsPaletteOpen(true);
-            }
-
-            if (!isPaletteOpen) return;
-
-            // Navigation
-            if (e.key === "ArrowDown") {
-                e.preventDefault();
-                setSelectedIndex((prev) =>
-                    Math.min(prev + 1, filteredNotes.length - 1),
-                );
-            }
-
-            if (e.key === "ArrowUp") {
-                e.preventDefault();
-                setSelectedIndex((prev) => Math.max(prev - 1, 0));
-            }
-
-            // Select
-            if (e.key === "Enter") {
-                if (filteredNotes[selectedIndex]) {
-                    onSelectNote(filteredNotes[selectedIndex]);
-                    setIsPaletteOpen(false);
-                }
-            }
-
-            // Close
-            if (e.key === "Escape") {
-                setIsPaletteOpen(false);
-            }
-        }
-
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [isPaletteOpen, selectedIndex, filteredNotes]);
+    const { isPaletteOpen, setIsPaletteOpen, selectedIndex, setSelectedIndex } =
+        useCommandPalette(filteredNotes, onSelectNote);
 
     useEffect(() => {
         setSelectedIndex(0);
     }, [searchQuery]);
 
     return (
-        <main
-            className="
-    flex-1 
-    p-3 sm:p-4 md:p-6 
-    space-y-3 sm:space-y-4 
-    bg-gray-50 dark:bg-gray-950 
-    h-full overflow-y-auto 
-    transition-colors duration-300
-  "
-        >
+        <main className="flex-1 p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4 bg-gray-50 dark:bg-gray-950 h-full overflow-y-auto transition-colors duration-300">
             {/* Search */}
             <Searchbar
                 searchQuery={searchQuery}
@@ -117,100 +62,15 @@ export default function HomeLayout({ onSelectNote }) {
                 )}
             </div>
 
-            {/* Command Palette */}
-            {isPaletteOpen && (
-                <div
-                    className="
-        fixed inset-0 
-        cursor-pointer 
-        bg-black/40 backdrop-blur-sm 
-        flex items-start justify-center 
-        pt-16 sm:pt-20 md:pt-24
-        px-3 sm:px-4
-        z-50
-      "
-                    onClick={() => setIsPaletteOpen(false)}
-                >
-                    <div
-                        className="
-          w-full 
-          max-w-lg md:max-w-xl
-          cursor-default 
-          bg-white dark:bg-gray-900 
-          rounded-xl sm:rounded-2xl 
-          shadow-xl 
-          p-3 sm:p-4
-        "
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        {/* Input */}
-                        <input
-                            autoFocus
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Search notes..."
-                            className="
-            w-full 
-            px-3 sm:px-4 
-            py-2.5 sm:py-3 
-            text-sm sm:text-base
-            rounded-lg 
-            border 
-            dark:bg-gray-800 
-            dark:border-gray-700 
-            outline-none
-          "
-                        />
-
-                        {/* Results */}
-                        <div className="mt-3 sm:mt-4 max-h-64 sm:max-h-80 overflow-y-auto">
-                            {filteredNotes.length === 0 && (
-                                <p className="text-sm text-gray-500 p-2">
-                                    No results found
-                                </p>
-                            )}
-
-                            {filteredNotes.map((note, index) => (
-                                <div
-                                    key={note.id}
-                                    onClick={() => {
-                                        onSelectNote(note);
-                                        setIsPaletteOpen(false);
-                                    }}
-                                    className={`p-2.5 sm:p-3 rounded-lg cursor-pointer transition ${
-                                        index === selectedIndex
-                                            ? "bg-blue-100 dark:bg-blue-900"
-                                            : "hover:bg-gray-100 dark:hover:bg-gray-800"
-                                    }`}
-                                >
-                                    <p
-                                        className="font-medium text-sm sm:text-base text-gray-800 dark:text-gray-200"
-                                        dangerouslySetInnerHTML={{
-                                            __html: highlightText(
-                                                note.title || "Untitled",
-                                                searchQuery,
-                                            ),
-                                        }}
-                                    />
-
-                                    <p
-                                        className="text-xs text-gray-500 line-clamp-1"
-                                        dangerouslySetInnerHTML={{
-                                            __html: highlightText(
-                                                getSnippet(
-                                                    note.content,
-                                                    searchQuery,
-                                                ),
-                                                searchQuery,
-                                            ),
-                                        }}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            )}
+            <CommandPalette
+                isOpen={isPaletteOpen}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                filteredNotes={filteredNotes}
+                selectedIndex={selectedIndex}
+                setIsPaletteOpen={setIsPaletteOpen}
+                onSelectNote={onSelectNote}
+            />
         </main>
     );
 }

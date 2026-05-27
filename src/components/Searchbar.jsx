@@ -19,7 +19,7 @@ export default function Searchbar({ searchQuery, setSearchQuery }) {
       placeholder-gray-400 dark:placeholder-gray-500
       shadow-sm 
       focus:outline-none focus:ring-2 
-      focus:ring-blue-500 focus:border-transparent 
+      focus:ring-emerald-500 focus:border-transparent 
       transition-colors duration-300
     "
             />

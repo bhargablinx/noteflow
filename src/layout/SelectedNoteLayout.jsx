@@ -139,7 +139,7 @@ export default function SelectedNoteLayout({ selectedNote, onBack }) {
 
                     <button
                         onClick={handleSave}
-                        className="bg-blue-600 hover:bg-blue-700 text-white 
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white 
         px-2 sm:px-3 md:px-4 
         py-1 sm:py-1.5 
         rounded-lg text-xs sm:text-sm"

@@ -30,7 +30,7 @@ export default function NotesCard({
         "bg-teal-100 text-teal-700 border-teal-200",
         "bg-cyan-100 text-cyan-700 border-cyan-200",
         "bg-sky-100 text-sky-700 border-sky-200",
-        "bg-blue-100 text-blue-700 border-blue-200",
+        "bg-emerald-100 text-emerald-700 border-emerald-200",
         "bg-indigo-100 text-indigo-700 border-indigo-200",
         "bg-violet-100 text-violet-700 border-violet-200",
         "bg-purple-100 text-purple-700 border-purple-200",
@@ -75,7 +75,7 @@ export default function NotesCard({
                             border shadow-sm hover:shadow-md dark:shadow-gray-800/30
                         ${
                             isFlashing
-                                ? "bg-blue-100 dark:bg-blue-900 border-blue-400 scale-[1.01] sm:scale-[1.02]"
+                                ? "bg-emerald-100 dark:bg-emerald-900 border-emerald-400 scale-[1.01] sm:scale-[1.02]"
                                 : "bg-white dark:bg-gray-900 border-transparent dark:border-gray-800"
                         }`}
         >

@@ -42,7 +42,7 @@ export default function Header() {
 
                 <div className="flex items-center gap-2 sm:gap-3 md:gap-6">
                     <button
-                        className="bg-blue-600 hover:bg-blue-700 text-white 
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white 
         px-2 py-1 text-sm 
         sm:px-3 sm:py-1.5 sm:text-sm 
         md:px-4 md:py-2 md:text-base 

@@ -269,7 +269,7 @@ export default function Editor({
       px-2.5 sm:px-3 py-1.5 rounded-lg
       text-gray-600 dark:text-gray-300
       placeholder:text-gray-400
-      outline-none focus:ring-1 focus:ring-blue-300
+      outline-none focus:ring-1 focus:ring-emerald-300
       shrink-0
     "
             />
@@ -294,8 +294,8 @@ export default function Editor({
         p-3 sm:p-4 rounded-lg sm:rounded-xl
         border border-gray-200 dark:border-gray-700
 
-        focus:ring-1 focus:ring-blue-300
-        focus:border-blue-300
+        focus:ring-1 focus:ring-emerald-300
+        focus:border-emerald-300
 
         shadow-sm
       "

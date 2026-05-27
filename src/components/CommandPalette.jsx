@@ -73,7 +73,7 @@ export default function CommandPalette({
                             }}
                             className={`p-2.5 sm:p-3 rounded-lg cursor-pointer transition ${
                                 index === selectedIndex
-                                    ? "bg-blue-100 dark:bg-blue-900"
+                                    ? "bg-emerald-100 dark:bg-emerald-900"
                                     : "hover:bg-gray-100 dark:hover:bg-gray-800"
                             }`}
                         >

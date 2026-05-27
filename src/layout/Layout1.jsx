@@ -2,6 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import NotesCard from "../components/NotesCard";
 import Searchbar from "../components/Searchbar";
 import { NotesContext } from "../context/NotesContext";
+import { getTimeAgo } from "../utils/formatDate";
+import { highlightText } from "../utils/highlightText";
+import { getSnippet } from "../utils/getSnippet";
 
 export default function Layout1({ onSelectNote }) {
     const { notes } = useContext(NotesContext);
@@ -9,26 +12,6 @@ export default function Layout1({ onSelectNote }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [isPaletteOpen, setIsPaletteOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
-
-    function getTimeAgo(dateString) {
-        const now = new Date();
-        const past = new Date(dateString);
-
-        const diffInSeconds = Math.floor((now - past) / 1000);
-
-        if (diffInSeconds < 60) return "Just now";
-
-        const diffInMinutes = Math.floor(diffInSeconds / 60);
-        if (diffInMinutes < 60) return `${diffInMinutes} min ago`;
-
-        const diffInHours = Math.floor(diffInMinutes / 60);
-        if (diffInHours < 24) return `${diffInHours} hr ago`;
-
-        const diffInDays = Math.floor(diffInHours / 24);
-        if (diffInDays < 7) return `${diffInDays} day(s) ago`;
-
-        return past.toLocaleDateString(); // fallback
-    }
 
     const filteredNotes = notes.filter((note) => {
         const q = searchQuery.toLowerCase();
@@ -40,46 +23,6 @@ export default function Layout1({ onSelectNote }) {
         );
     });
 
-    function highlightText(text, query) {
-        if (!query) return text;
-
-        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const regex = new RegExp(`(${escaped})`, "gi");
-
-        return text.replace(regex, "<mark>$1</mark>");
-    }
-
-    function getSnippet(text, query) {
-        if (!text) return "";
-        if (!query) return text.slice(0, 150);
-
-        const lowerText = text.toLowerCase();
-        const words = query.toLowerCase().split(" ").filter(Boolean);
-
-        const index = words
-            .map((word) => lowerText.indexOf(word))
-            .find((i) => i !== -1);
-
-        if (index === undefined) return text.slice(0, 150);
-
-        const SNIPPET_BEFORE = 40;
-        const SNIPPET_AFTER = 100;
-
-        let start = Math.max(0, index - SNIPPET_BEFORE);
-        let end = Math.min(text.length, index + SNIPPET_AFTER);
-
-        // Adjust to word boundaries
-        while (start > 0 && text[start] !== " ") start--;
-        while (end < text.length && text[end] !== " ") end++;
-
-        let snippet = text.slice(start, end);
-
-        if (start > 0) snippet = "..." + snippet;
-        if (end < text.length) snippet += "...";
-
-        return snippet;
-    }
-
     // Auto-update every minute
     useEffect(() => {
         const interval = setInterval(() => {
@@ -89,6 +32,7 @@ export default function Layout1({ onSelectNote }) {
         return () => clearInterval(interval);
     }, []);
 
+    // Handle Keydown for navigation of notes in open pallet mode
     useEffect(() => {
         function handleKeyDown(e) {
             // Open palette

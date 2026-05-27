@@ -6,8 +6,6 @@ import { NotesContext } from "../context/NotesContext";
 import { useAutosave } from "../hooks/useAutosave";
 import { useEditorHistory } from "../hooks/useEditorHistory";
 import { toolbarActions } from "../utils/toolbarActions";
-import NotePDF from "../components/NotePDF";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useReactToPrint } from "react-to-print";
 
 export default function SelectedNoteLayout({ selectedNote, onBack }) {
@@ -177,33 +175,6 @@ export default function SelectedNoteLayout({ selectedNote, onBack }) {
                                     </span>
                                 </button>
 
-                                {/* <PDFDownloadLink
-                                    document={
-                                        <NotePDF
-                                            title={title}
-                                            content={content}
-                                        />
-                                    }
-                                    fileName={`${title || "note"}.pdf`}
-                                    className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                >
-                                    {({ loading }) => (
-                                        <>
-                                            <i className="fa-solid fa-download"></i>
-
-                                            {loading ? (
-                                                "Generating PDF..."
-                                            ) : (
-                                                <>
-                                                    Download{" "}
-                                                    <span className="text-gray-500 font-bold">
-                                                        (pdf)
-                                                    </span>
-                                                </>
-                                            )}
-                                        </>
-                                    )}
-                                </PDFDownloadLink> */}
                                 <button
                                     onClick={handlePrint}
                                     className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -279,10 +250,13 @@ export default function SelectedNoteLayout({ selectedNote, onBack }) {
                 <div className="hidden md:block w-px bg-gray-200 dark:bg-gray-800" />
 
                 {/* RIGHT SIDE (desktop only) */}
-                <div
-                    className="hidden md:block flex-1 min-w-0 overflow-auto"
-                >
-                    <Preview title={title} tags={tags} content={content} printRef={printRef} />
+                <div className="hidden md:block flex-1 min-w-0 overflow-auto">
+                    <Preview
+                        title={title}
+                        tags={tags}
+                        content={content}
+                        printRef={printRef}
+                    />
                 </div>
             </div>
         </div>

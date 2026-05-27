@@ -7,7 +7,7 @@ export default function Toolbar({ onAction }) {
         "flex items-center justify-center w-9 h-9 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white transition";
 
     return (
-        <div className="flex items-center gap-1 border-b px-2 sm:px-3 py-2 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 shadow-sm overflow-x-auto whitespace-nowrap">
+        <div className="relative flex items-center gap-1 border-b px-2 sm:px-3 py-2 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 shadow-sm overflow-visible whitespace-nowrap">
             {/* Text styles */}
             <button className={baseBtn} onClick={() => onAction("bold")}>
                 <b>B</b>
@@ -76,7 +76,7 @@ export default function Toolbar({ onAction }) {
                 </button>
 
                 {open && (
-                    <div className="absolute right-0 mt-2 w-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-2 sm:p-3 z-50 flex flex-wrap gap-2">
+                    <div className="absolute right-0 top-full mt-2 w-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-2 sm:p-3 z-50 flex flex-wrap gap-2">
                         <button
                             className={baseBtn}
                             onClick={() => onAction("h1")}

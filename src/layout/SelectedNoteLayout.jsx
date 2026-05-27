@@ -87,6 +87,24 @@ export default function SelectedNoteLayout({ selectedNote, onBack }) {
         });
     };
 
+    const handleDelete = () => {
+        const confirmDelete = window.confirm("Delete this note?");
+        if (!confirmDelete) return;
+        deleteNotes(selectedNote);
+    };
+
+    const handleDownloadRaw = () => {
+        const blob = new Blob([content], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${title || "note"}.md`;
+        a.click();
+
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <div className="flex flex-col h-full bg-white dark:bg-gray-950">
             {/* Top Bar */}

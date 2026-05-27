@@ -6,7 +6,7 @@ import { getTimeAgo } from "../utils/formatDate";
 import { highlightText } from "../utils/highlightText";
 import { getSnippet } from "../utils/getSnippet";
 
-export default function Layout1({ onSelectNote }) {
+export default function HomeLayout({ onSelectNote }) {
     const { notes } = useContext(NotesContext);
     const [tick, setTick] = useState(0);
     const [searchQuery, setSearchQuery] = useState("");

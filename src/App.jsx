@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { NotesContext } from "./context/NotesContext";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import Layout1 from "./layout/Layout1";
+import HomeLayout from "./layout/HomeLayout";
 import Layout2 from "./layout/Layout2";
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
                             onBack={() => setSelectedNoteId(null)}
                         />
                     ) : (
-                        <Layout1
+                        <HomeLayout
                             onSelectNote={(note) => setSelectedNoteId(note.id)}
                         />
                     )}

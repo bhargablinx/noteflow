@@ -5,11 +5,10 @@ import {
     oneLight,
 } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
-import { ThemeContext } from "../context/ThemeContext";
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 
 export default function Preview({ title, tags, content, printRef }) {
-    const { theme } = useContext(ThemeContext);
+    const theme = useSelector((state) => state.theme.theme);
 
     return (
         <div

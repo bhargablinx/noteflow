@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { ThemeContext } from "../context/ThemeContext";
 import { NotesContext } from "../context/NotesContext";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "../reducers/themeSlice";
 
 export default function Header() {
-    const { theme, setTheme } = useContext(ThemeContext);
+    const theme = useSelector((state) => state.theme.theme);
+    const dispatch = useDispatch();
     const { notes, setNotes, setSelectedNoteId } = useContext(NotesContext);
 
     const handleCreateNote = () => {
@@ -19,11 +21,8 @@ export default function Header() {
         setSelectedNoteId(newNote.id);
     };
 
-    const toggleTheme = () => {
-        theme == "light" ? setTheme("dark") : setTheme("light");
-        const html = document.querySelector("html");
-        html.classList.remove("light", "dark");
-        html.classList.add(theme);
+    const handleToggleTheme = () => {
+        dispatch(toggleTheme());
     };
 
     return (
@@ -55,11 +54,11 @@ export default function Header() {
 
                     <button
                         className={`fa-solid ${
-                            theme === "light"
+                            theme !== "light"
                                 ? "fa-sun text-yellow-400"
                                 : "fa-moon text-gray-800"
                         } text-lg sm:text-xl md:text-2xl cursor-pointer`}
-                        onClick={toggleTheme}
+                        onClick={handleToggleTheme}
                     ></button>
                 </div>
             </header>
